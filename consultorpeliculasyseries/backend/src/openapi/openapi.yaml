@@ -1,0 +1,76 @@
+openapi: 3.0.0
+info:
+  version: 0.0.0
+  title: API Consulto De Peliculas/Series
+  description: Api para mi proyecto TFG de DAW usando OpenAPI
+  
+servers:
+  - url: https://
+  
+paths:
+  /comentarios:
+    get:
+      summary: Obtener todos los comentarios
+      responses:
+        '200':
+          description: Lista de todos los comentarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    usuario:
+                      type: string
+                    mensaje:
+                      type: string
+                      
+    post:
+      summary: Crear un nuevo comentario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                usuario:
+                  type: string
+                mensaje:
+                  type: string
+                  
+      responses:
+        '201':
+          description: Comentario creado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  usuario:
+                    type: string
+                  mensaje:
+                    type: string
+                    
+  /comentarios/{id}:
+    delete:
+      summary: Eliminar un comentario
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            
+      responses:
+        '204':
+          description: Comentario eliminado
+
+
+
+
