@@ -3,14 +3,14 @@ import app from '../../src/app.js';
 import Comment from '../../src/models/Comment.js';
 
 describe('commentController - E2E Tests', () => {
-    let token;
+    ;
     let server;
 
     const res = request(app)
         .post('/api/auth/register')
         .send({ name: 'Test User', email: 'testUser@gmail.com', password: '1234' });
 
-    token = res.body.token;
+    let token = res.body.token;
 
     it('should create a new comment', async () => {
         const res = await request(app)

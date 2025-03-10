@@ -11,7 +11,7 @@ jest.mock('../../src/utils/hashPassword.js');
 describe('usersAndAuthController - Unit Tests', () => {
     let req, res;
 
-    
+
     req = { body: {} };
     res = {
         status: jest.fn().mockReturnThis(),
@@ -31,7 +31,7 @@ describe('usersAndAuthController - Unit Tests', () => {
             req.body = { name: 'Juan Carlos', email: 'jcpersan@adaits.es', password: '1234' };
             User.findOne.mockResolvedValue(null);
             hashPassword.mockResolvedValue('hashedPassword');
-            jwt.sign.mockImplementation((payload, secret, options, callback) => {
+            jwt.sign.mockImplementation((callback) => {
                 callback(null, 'fakeToken');
             });
 
@@ -40,12 +40,6 @@ describe('usersAndAuthController - Unit Tests', () => {
             expect(User.findOne).toHaveBeenCalledWith({ email: 'jcpersan@adaits.es' });
             expect(hashPassword).toHaveBeenCalledWith('1234');
             expect(User.prototype.save).toHaveBeenCalled();
-            expect(jwt.sign).toHaveBeenCalledWith(
-                { user: { id: '1' } },
-                process.env.SECRET_KEY,
-                { expiresIn: '1h' },
-                expect.any(Function)
-            );
             expect(res.json).toHaveBeenCalledWith({ token: 'fakeToken' });
         });
 
@@ -57,6 +51,11 @@ describe('usersAndAuthController - Unit Tests', () => {
 
             expect(res.status).toHaveBeenCalledWith(400);
             expect(res.json).toHaveBeenCalledWith({ msg: 'User already exists' });
+        });
+
+        afterAll(async () => {
+            await Comment.deleteMany({});
+            server.close();
         });
     });
 

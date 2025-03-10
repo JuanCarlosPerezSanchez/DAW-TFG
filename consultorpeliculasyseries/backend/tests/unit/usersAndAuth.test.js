@@ -26,9 +26,4 @@ describe('usersAndAuthController - E2E Tests', () => {
         expect(res.statusCode).toBe(200);
         expect(res.body).toHaveProperty('token');
     });
-
-    afterAll(async () => {
-        await Comment.deleteMany({});
-        server.close();
-    });
 });
