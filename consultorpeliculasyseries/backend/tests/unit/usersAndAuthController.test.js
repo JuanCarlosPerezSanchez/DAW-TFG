@@ -20,8 +20,8 @@ describe('usersAndAuthController - Unit Tests', () => {
         };
 
         User.prototype.save = jest.fn().mockResolvedValue({
-            id: '1',
-            name: 'Test User',
+            _id: '1',
+            name: 'Juan Carlos',
             email: 'jcpersan@adaits.es',
             password: 'hashedPassword',
         });
@@ -33,7 +33,7 @@ describe('usersAndAuthController - Unit Tests', () => {
 
     describe('register', () => {
         it('should register a new user and return a token', async () => {
-            req.body = { name: 'Test User', email: 'jcpersan@adaits.es', password: '1234' };
+            req.body = { name: 'Juan Carlos', email: 'jcpersan@adaits.es', password: '1234' };
             User.findOne.mockResolvedValue(null);
             hashPassword.mockResolvedValue('hashedPassword');
             jwt.sign.mockImplementation((payload, secret, options, callback) => {
@@ -55,7 +55,7 @@ describe('usersAndAuthController - Unit Tests', () => {
         });
 
         it('should return 400 if user already exists', async () => {
-            req.body = { name: 'Test User', email: 'jcpersan@adaits.es', password: '1234' };
+            req.body = { name: 'Juan Carlos', email: 'jcpersan@adaits.es', password: '1234' };
             User.findOne.mockResolvedValue({});
 
             await register(req, res);
@@ -68,7 +68,7 @@ describe('usersAndAuthController - Unit Tests', () => {
     describe('login', () => {
         it('should login a user and return a token', async () => {
             req.body = { email: 'jcpersan@adaits.es', password: '1234' };
-            User.findOne.mockResolvedValue({ id: '1', password: 'hashedPassword' });
+            User.findOne.mockResolvedValue({ _id: '1', password: 'hashedPassword' });
             comparePassword.mockResolvedValue(true);
             jwt.sign.mockImplementation((payload, secret, options, callback) => {
                 callback(null, 'fakeToken');
@@ -89,7 +89,7 @@ describe('usersAndAuthController - Unit Tests', () => {
 
         it('should return 400 if credentials are invalid', async () => {
             req.body = { email: 'jcpersan@adaits.es', password: 'wrongPassword' };
-            User.findOne.mockResolvedValue({ id: '1', password: 'hashedPassword' })
+            User.findOne.mockResolvedValue({ _id: '1', password: 'hashedPassword' });
             comparePassword.mockResolvedValue(false);
 
             await login(req, res);
