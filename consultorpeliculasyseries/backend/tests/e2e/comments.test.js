@@ -6,15 +6,12 @@ describe('commentController - E2E Tests', () => {
     let token;
     let server;
 
-    beforeAll(async () => {
-        server = app.listen(6000);
+    server = app.listen(6000)
+    const res = request(app)
+        .post('/api/auth/register')
+        .send({ name: 'Test User', email: 'testUser@gmail.com', password: '1234' })
+    token = res.body.token;
 
-        const res = await request(app)
-            .post('/api/auth/register')
-            .send({ name: 'Test User', email: 'testUser@gmail.com', password: '1234' });
-
-        token = res.body.token;
-    });
 
     afterAll(async () => {
         await Comment.deleteMany({});
