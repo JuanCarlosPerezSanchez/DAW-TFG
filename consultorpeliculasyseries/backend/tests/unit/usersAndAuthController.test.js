@@ -11,25 +11,21 @@ jest.mock('../../src/utils/hashPassword.js');
 describe('usersAndAuthController - Unit Tests', () => {
     let req, res;
 
-    beforeEach(() => {
-        req = { body: {} };
-        res = {
-            status: jest.fn().mockReturnThis(),
-            json: jest.fn(),
-            send: jest.fn(),
-        };
+    
+    req = { body: {} };
+    res = {
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
+        send: jest.fn(),
+    };
 
-        User.prototype.save = jest.fn().mockResolvedValue({
-            _id: '1',
-            name: 'Juan Carlos',
-            email: 'jcpersan@adaits.es',
-            password: 'hashedPassword',
-        });
+    User.prototype.save = jest.fn().mockResolvedValue({
+        _id: '1',
+        name: 'Juan Carlos',
+        email: 'jcpersan@adaits.es',
+        password: 'hashedPassword',
     });
-
-    afterEach(() => {
-        jest.clearAllMocks();
-    });
+    
 
     describe('register', () => {
         it('should register a new user and return a token', async () => {

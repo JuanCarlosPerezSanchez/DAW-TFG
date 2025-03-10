@@ -11,7 +11,7 @@ describe('commentController - E2E Tests', () => {
 
         const res = await request(app)
             .post('/api/auth/register')
-            .send({ name: 'Test User', email: 'jcpersan@adaits.es', password: '1234' });
+            .send({ name: 'Test User', email: 'testUser@gmail.com', password: '1234' });
 
         token = res.body.token;
     });

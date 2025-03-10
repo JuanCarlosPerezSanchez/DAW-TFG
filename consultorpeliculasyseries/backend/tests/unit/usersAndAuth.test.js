@@ -17,22 +17,20 @@ describe('usersAndAuthController - E2E Tests', () => {
     it('should register a new user', async () => {
         const res = await request(app)
             .post('/api/auth/register')
-            .send({ name: 'Test User', email: 'jcpersan@adaits.es', password: '1234' });
+            .send({ name: 'Test User', email: 'newUser@gmail.com', password: '1234' });
 
         expect(res.statusCode).toBe(201);
         expect(res.body).toHaveProperty('token');
     });
 
     it('should login a user', async () => {
-        // Registrar un usuario primero
         await request(app)
             .post('/api/auth/register')
-            .send({ name: 'Test User', email: 'jcpersan@adaits.es', password: '1234' });
+            .send({ name: 'Test User', email: 'UserNew@gmail.com', password: '1234' });
 
-        // Iniciar sesión con el usuario registrado
         const res = await request(app)
             .post('/api/auth/login')
-            .send({ email: 'jcpersan@adaits.es', password: '1234' });
+            .send({ email: 'UserNew@gmail.com', password: '1234' });
 
         expect(res.statusCode).toBe(200);
         expect(res.body).toHaveProperty('token');
