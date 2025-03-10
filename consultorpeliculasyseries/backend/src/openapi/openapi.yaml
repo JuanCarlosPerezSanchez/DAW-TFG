@@ -3,10 +3,10 @@ info:
   version: 0.0.0
   title: API Consulto De Peliculas/Series
   description: Api para mi proyecto TFG de DAW usando OpenAPI
-  
+
 servers:
-  - url: https://
-  
+  - url: http://localhost:5000
+
 paths:
   /comentarios:
     get:
@@ -21,15 +21,15 @@ paths:
                 items:
                   type: object
                   properties:
-                    id:
-                      type: integer
-                    usuario:
+                    userName:
                       type: string
-                    mensaje:
+                    text:
                       type: string
-                      
+
     post:
       summary: Crear un nuevo comentario
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -37,11 +37,9 @@ paths:
             schema:
               type: object
               properties:
-                usuario:
+                text:
                   type: string
-                mensaje:
-                  type: string
-                  
+
       responses:
         '201':
           description: Comentario creado
@@ -51,26 +49,120 @@ paths:
                 type: object
                 properties:
                   id:
-                    type: integer
-                  usuario:
                     type: string
-                  mensaje:
+                  userId:
                     type: string
-                    
+                  text:
+                    type: string
+
   /comentarios/{id}:
-    delete:
-      summary: Eliminar un comentario
+    put:
+      summary: Actualizar un comentario
+      security:
+        - bearerAuth: []
       parameters:
         - name: id
           in: path
           required: true
           schema:
-            type: integer
-            
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+
+      responses:
+        '200':
+          description: Comentario actualizado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  userId:
+                    type: string
+                  text:
+                    type: string
+
+    delete:
+      summary: Eliminar un comentario
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+
       responses:
         '204':
           description: Comentario eliminado
 
+  /auth/register:
+    post:
+      summary: Registrar un nuevo usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
 
+      responses:
+        '200':
+          description: Usuario registrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
 
+  /auth/login:
+    post:
+      summary: Iniciar sesión
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                  
+      responses:
+        '200':
+          description: Inicio de sesión exitoso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
 
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

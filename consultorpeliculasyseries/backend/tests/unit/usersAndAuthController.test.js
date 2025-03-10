@@ -18,6 +18,13 @@ describe('usersAndAuthController - Unit Tests', () => {
             json: jest.fn(),
             send: jest.fn(),
         };
+
+        User.prototype.save = jest.fn().mockResolvedValue({
+            id: '1',
+            name: 'Test User',
+            email: 'jcpersan@adaits.es',
+            password: 'hashedPassword',
+        });
     });
 
     afterEach(() => {
@@ -29,14 +36,21 @@ describe('usersAndAuthController - Unit Tests', () => {
             req.body = { name: 'Test User', email: 'jcpersan@adaits.es', password: '1234' };
             User.findOne.mockResolvedValue(null);
             hashPassword.mockResolvedValue('hashedPassword');
-            jwt.sign.mockReturnValue('fakeToken');
+            jwt.sign.mockImplementation((payload, secret, options, callback) => {
+                callback(null, 'fakeToken');
+            });
 
             await register(req, res);
 
             expect(User.findOne).toHaveBeenCalledWith({ email: 'jcpersan@adaits.es' });
             expect(hashPassword).toHaveBeenCalledWith('1234');
             expect(User.prototype.save).toHaveBeenCalled();
-            expect(jwt.sign).toHaveBeenCalled();
+            expect(jwt.sign).toHaveBeenCalledWith(
+                { user: { id: '1' } },
+                process.env.SECRET_KEY,
+                { expiresIn: '1h' },
+                expect.any(Function)
+            );
             expect(res.json).toHaveBeenCalledWith({ token: 'fakeToken' });
         });
 
@@ -56,19 +70,26 @@ describe('usersAndAuthController - Unit Tests', () => {
             req.body = { email: 'jcpersan@adaits.es', password: '1234' };
             User.findOne.mockResolvedValue({ id: '1', password: 'hashedPassword' });
             comparePassword.mockResolvedValue(true);
-            jwt.sign.mockReturnValue('fakeToken');
+            jwt.sign.mockImplementation((payload, secret, options, callback) => {
+                callback(null, 'fakeToken');
+            });
 
             await login(req, res);
 
             expect(User.findOne).toHaveBeenCalledWith({ email: 'jcpersan@adaits.es' });
             expect(comparePassword).toHaveBeenCalledWith('1234', 'hashedPassword');
-            expect(jwt.sign).toHaveBeenCalled();
+            expect(jwt.sign).toHaveBeenCalledWith(
+                { user: { id: '1' } },
+                process.env.SECRET_KEY,
+                { expiresIn: '1h' },
+                expect.any(Function)
+            );
             expect(res.json).toHaveBeenCalledWith({ token: 'fakeToken' });
         });
 
         it('should return 400 if credentials are invalid', async () => {
             req.body = { email: 'jcpersan@adaits.es', password: 'wrongPassword' };
-            User.findOne.mockResolvedValue({ id: '1', password: 'hashedPassword' });
+            User.findOne.mockResolvedValue({ id: '1', password: 'hashedPassword' })
             comparePassword.mockResolvedValue(false);
 
             await login(req, res);

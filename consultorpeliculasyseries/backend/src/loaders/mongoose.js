@@ -11,7 +11,9 @@ const connectDB = async () => {
         console.log('MongoDB Connected...');
     } catch (err) {
         console.error(err.message);
-        process.exit(1);
+        if (process.env.NODE_ENV !== 'test') {
+            process.exit(1);
+        }
     }
 };
 
