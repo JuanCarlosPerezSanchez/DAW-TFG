@@ -5,15 +5,6 @@ import User from '../../src/models/User.js';
 describe('usersAndAuthController - E2E Tests', () => {
     let server;
 
-    beforeAll(async () => {
-        server = app.listen(6000);
-    });
-
-    afterAll(async () => {
-        await User.deleteMany({});
-        server.close();
-    });
-
     it('should register a new user', async () => {
         const res = await request(app)
             .post('/api/auth/register')
@@ -34,5 +25,10 @@ describe('usersAndAuthController - E2E Tests', () => {
 
         expect(res.statusCode).toBe(200);
         expect(res.body).toHaveProperty('token');
+    });
+
+    afterAll(async () => {
+        await Comment.deleteMany({});
+        server.close();
     });
 });

@@ -6,17 +6,11 @@ describe('commentController - E2E Tests', () => {
     let token;
     let server;
 
-    server = app.listen(6000)
     const res = request(app)
         .post('/api/auth/register')
-        .send({ name: 'Test User', email: 'testUser@gmail.com', password: '1234' })
+        .send({ name: 'Test User', email: 'testUser@gmail.com', password: '1234' });
+
     token = res.body.token;
-
-
-    afterAll(async () => {
-        await Comment.deleteMany({});
-        server.close();
-    });
 
     it('should create a new comment', async () => {
         const res = await request(app)
@@ -35,5 +29,10 @@ describe('commentController - E2E Tests', () => {
 
         expect(res.statusCode).toBe(200);
         expect(Array.isArray(res.body)).toBe(true);
+    });
+
+    afterAll(async () => {
+        await Comment.deleteMany({});
+        server.close();
     });
 });

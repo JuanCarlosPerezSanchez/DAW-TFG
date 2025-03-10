@@ -25,7 +25,6 @@ describe('usersAndAuthController - Unit Tests', () => {
         email: 'jcpersan@adaits.es',
         password: 'hashedPassword',
     });
-    
 
     describe('register', () => {
         it('should register a new user and return a token', async () => {

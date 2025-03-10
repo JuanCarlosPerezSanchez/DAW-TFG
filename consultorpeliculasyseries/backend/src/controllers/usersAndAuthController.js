@@ -16,7 +16,7 @@ const register = async (req, res) => {
         user = new User({ name, email, password: hashedPassword });
         await user.save();
 
-        const payload = { user: { id: user.id } };
+        const payload = { user: { id: user._id } };
         jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '1h' }, (err, token) => {
             if (err) throw err;
             res.json({ token });
@@ -41,7 +41,7 @@ const login = async (req, res) => {
             return res.status(400).json({ msg: 'Invalid Credentials' });
         }
 
-        const payload = { user: { id: user.id } };
+        const payload = { user: { id: user._id } };
         jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '1h' }, (err, token) => {
             if (err) throw err;
             res.json({ token });
