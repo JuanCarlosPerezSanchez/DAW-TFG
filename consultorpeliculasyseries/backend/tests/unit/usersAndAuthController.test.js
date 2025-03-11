@@ -2,6 +2,7 @@ import { register, login } from '../../src/controllers/usersAndAuthController.js
 import User from '../../src/models/User.js';
 import jwt from 'jsonwebtoken';
 import { hashPassword, comparePassword } from '../../src/utils/hashPassword.js';
+import mongoose from 'mongoose';
 
 // Mock de los módulos
 jest.mock('../../src/models/User.js');
@@ -11,27 +12,31 @@ jest.mock('../../src/utils/hashPassword.js');
 describe('usersAndAuthController - Unit Tests', () => {
     let req, res;
 
+    beforeEach(() => {
+        req = { body: {} };
+        res = {
+            status: jest.fn().mockReturnThis(),
+            json: jest.fn(),
+            send: jest.fn(),
+        };
 
-    req = { body: {} };
-    res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-        send: jest.fn(),
-    };
-
-    User.prototype.save = jest.fn().mockResolvedValue({
-        _id: '1',
-        name: 'Juan Carlos',
-        email: 'jcpersan@adaits.es',
-        password: 'hashedPassword',
+        User.prototype.save = jest.fn().mockResolvedValue({
+            _id: '1',
+            name: 'Juan Carlos',
+            email: 'jcpersan@adaits.es',
+            password: 'hashedPassword',
+        });
     });
+    afterAll(async () => {
+            await mongoose.disconnect();
+        });
 
     describe('register', () => {
         it('should register a new user and return a token', async () => {
             req.body = { name: 'Juan Carlos', email: 'jcpersan@adaits.es', password: '1234' };
             User.findOne.mockResolvedValue(null);
             hashPassword.mockResolvedValue('hashedPassword');
-            jwt.sign.mockImplementation((callback) => {
+            jwt.sign.mockImplementation((payload, secret, options, callback) => {
                 callback(null, 'fakeToken');
             });
 
@@ -51,11 +56,6 @@ describe('usersAndAuthController - Unit Tests', () => {
 
             expect(res.status).toHaveBeenCalledWith(400);
             expect(res.json).toHaveBeenCalledWith({ msg: 'User already exists' });
-        });
-
-        afterAll(async () => {
-            await Comment.deleteMany({});
-            server.close();
         });
     });
 
