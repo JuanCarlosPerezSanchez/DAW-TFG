@@ -1,0 +1,40 @@
+/* Hace que el footer esté fijo en la parte inferior */
+footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+}
+
+/* Contenedor principal del footer */
+.footer {
+    background: #16181d;
+    width: 100%;
+}
+
+/* Contenedor del contenido del footer */
+.footer-content {
+    background: #181a20;
+    color: #FFD600;
+    border-top: 2px solid #FFD600;
+    box-shadow: 0 -2px 16px #000a;
+    width: 100%;
+}
+
+/* Nombre del desarrollador */
+.footer-dev {
+    color: #FFD600;
+    font-weight: 600;
+    margin-right: 30px;
+    text-align: right;
+}
+
+/* Texto de copyright */
+.footer-copy {
+    color: #aaa;
+    font-size: 0.98rem;
+    text-align: center;
+    margin: 0;
+    padding-bottom: 5px;
+}

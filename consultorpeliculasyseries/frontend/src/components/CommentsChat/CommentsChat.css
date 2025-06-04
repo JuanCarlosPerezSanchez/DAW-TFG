@@ -1,0 +1,209 @@
+/* --- Contenedor principal del chat de comentarios --- */
+.comments-chat-root {
+    background: #232733;
+    border-radius: 12px;
+    width: 820px;
+    height: 420px;
+    margin: 40px 0 0 -20px;
+    padding: 24px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 24px #000a;
+}
+
+/* --- Título del chat de comentarios --- */
+.comments-chat-title {
+    font-weight: 700;
+    font-size: 22px;
+    margin-bottom: 18px;
+    color: #FFD600;
+}
+
+/* --- Lista de mensajes/comentarios --- */
+.comments-chat-list {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 18px;
+    padding-right: 8px;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0;
+}
+
+/* --- Mensajes de estado: cargando, error o vacío --- */
+.comments-chat-loading,
+.comments-chat-error,
+.comments-chat-empty {
+    color: #aaa;
+    margin: auto;
+    font-style: italic;
+}
+
+/* --- Mensaje de error al cargar comentarios --- */
+.comments-chat-error {
+    color: #f66;
+}
+
+/* --- Mensaje para usuarios no autenticados --- */
+.comments-chat-login-msg {
+    color: #aaa;
+    font-style: italic;
+    margin-top: 10px;
+}
+
+/* --- Tarjeta de cada comentario --- */
+.comments-chat-message {
+    margin-bottom: 12px;
+    background: #181a20;
+    border-radius: 8px;
+    padding: 12px 16px;
+    align-self: flex-start;
+    max-width: 80%;
+    box-shadow: 0 2px 8px #0004;
+}
+
+/* --- Comentario propio del usuario actual --- */
+.comments-chat-message.current-user {
+    background: #FFD600;
+    align-self: flex-end;
+}
+
+/* --- Cabecera de cada comentario (usuario, fecha, acciones) --- */
+.comments-chat-message-header {
+    font-weight: 600;
+    margin-bottom: 2px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+/* --- Nombre de usuario del comentario --- */
+.comments-chat-message-user {
+    color: #FFD60099;
+}
+
+/* --- Nombre de usuario en comentario propio --- */
+.comments-chat-message.current-user .comments-chat-message-user {
+    color: #232733;
+}
+
+/* --- Fecha del comentario --- */
+.comments-chat-message-date {
+    color: #aaa;
+    font-weight: 400;
+    font-size: 13px;
+}
+
+/* --- Fecha en comentario propio --- */
+.comments-chat-message.current-user .comments-chat-message-date {
+    color: #23273399;
+}
+
+/* --- Texto del comentario --- */
+.comments-chat-message-text {
+    color: #fff;
+    font-size: 15px;
+    text-align: left;
+    white-space: pre-line;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+}
+
+/* --- Texto en comentario propio --- */
+.comments-chat-message.current-user .comments-chat-message-text {
+    color: #232733;
+}
+
+/* --- Formulario para escribir un nuevo comentario --- */
+.comments-chat-form {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+    margin-top: 8px;
+}
+
+/* --- Área de texto para escribir o editar comentarios --- */
+.comments-chat-input {
+    flex: 1;
+    border-radius: 8px;
+    border: none;
+    padding: 10px 14px;
+    font-size: 15px;
+    resize: none;
+    background: #181a20;
+    color: #fff;
+}
+
+/* --- Botón principal (enviar, guardar) --- */
+.comments-chat-btn {
+    background: #FFD600;
+    color: #232733;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 22px;
+    font-size: 16px;
+    cursor: pointer;
+    min-width: 100px; /* Asegura tamaño uniforme */
+}
+
+/* --- Botón deshabilitado --- */
+.comments-chat-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* --- Botón guardar en edición --- */
+.comments-chat-btn-save {
+    background: #181a20;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 22px;
+    font-size: 16px;
+    cursor: pointer;
+    min-width: 100px;
+}
+
+/* --- Botón cancelar edición --- */
+.comments-chat-btn-cancel {
+    background: #aaa;
+    color: #232733;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 22px;
+    font-size: 16px;
+    cursor: pointer;
+    min-width: 100px;
+}
+
+/* --- Contenedor de botones de acción (editar/eliminar) --- */
+.comments-chat-actions {
+    margin-left: 10px;
+    display: inline-flex;
+    gap: 8px;
+}
+
+/* --- Botones de editar y eliminar comentario --- */
+.comments-chat-edit-btn,
+.comments-chat-delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+/* --- Área de edición de comentario --- */
+.comments-chat-edit-area {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* --- Contenedor de botones en edición --- */
+.comments-chat-edit-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}

@@ -1,13 +1,13 @@
 import { register, login } from '../../src/controllers/usersAndAuthController.js';
 import User from '../../src/models/User.js';
 import jwt from 'jsonwebtoken';
-import { hashPassword, comparePassword } from '../../src/utils/hashPassword.js';
+import { hashPassword, comparePassword } from '../../src/utils/hashPasswordManager.js';
 import mongoose from 'mongoose';
 
 // Mock de los módulos
 jest.mock('../../src/models/User.js');
 jest.mock('jsonwebtoken');
-jest.mock('../../src/utils/hashPassword.js');
+jest.mock('../../src/utils/hashPasswordManager.js');
 
 describe('usersAndAuthController - Unit Tests', () => {
     let req, res;
@@ -55,7 +55,7 @@ describe('usersAndAuthController - Unit Tests', () => {
             await register(req, res);
 
             expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.json).toHaveBeenCalledWith({ msg: 'User already exists' });
+            expect(res.json).toHaveBeenCalledWith({ msg: 'Ese correo electronico ya está registrado' });
         });
     });
 

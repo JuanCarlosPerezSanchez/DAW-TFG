@@ -1,0 +1,46 @@
+/* --- Tarjeta base: define el tamaño, fondo y comportamiento general de la tarjeta de contenido --- */
+.content-card {
+    width: 210px;
+    height: 315px;
+    background: #232733;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.22s cubic-bezier(.4,2,.6,1), box-shadow 0.22s cubic-bezier(.4,2,.6,1);
+    display: inline-block;
+}
+
+/* --- Efecto visual al hacer hover sobre la tarjeta: escala y sombra --- */
+.content-card.hovered {
+    transform: scale(1.06);
+    box-shadow: 0 8px 32px #000a;
+    z-index: 2;
+}
+
+/* --- Imagen principal de la tarjeta: ocupa todo el espacio y mantiene proporciones --- */
+.content-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* --- Overlay: capa semitransparente sobre la tarjeta para mostrar acciones o información extra --- */
+.content-card-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    transition: background 0.22s cubic-bezier(.4,2,.6,1), opacity 0.22s cubic-bezier(.4,2,.6,1);
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* --- Overlay visible: muestra el fondo amarillo translúcido y permite interacción --- */
+.content-card-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+    background: hsl(50, 100%, 50%, 0.3);
+}
