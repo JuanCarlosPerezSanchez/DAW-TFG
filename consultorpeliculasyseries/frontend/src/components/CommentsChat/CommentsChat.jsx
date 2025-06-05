@@ -1,5 +1,5 @@
 //#region Imports
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { FaTrash, FaPencilAlt } from "react-icons/fa";
 import CommentsChatService from "./CommentsChatService";
 import "./CommentsChat.css";
@@ -14,20 +14,46 @@ const CommentsChat = ({ media_type, media_id, user }) => {
     const [posting, setPosting] = useState(false);
     const [editingId, setEditingId] = useState(null);
     const [editingText, setEditingText] = useState("");
-    const commentsEndRef = useRef(null);
     const userId = user && (user._id || user.id);
     //#endregion
 
-    //#region Eventos
-    // Evento que carga los comentarios cuando cambian segun el tipo de media o el id de usuario
-    useEffect(() => {
-        setCommentsLoading(true);
+    //#region Funciones auxiliares
+    // Compara dos arrays de comentarios por id y texto
+    const areCommentsEqual = (a, b) => {
+        if (a.length !== b.length) return false;
+        for (let i = 0; i < a.length; i++) {
+            if (a[i]._id !== b[i]._id || a[i].text !== b[i].text) {
+                return false;
+            }
+        }
+        return true;
+    };
+    // Carga los comentarios del backend solo si hay cambios
+    const loadComments = useCallback((showLoading = false) => {
+        if (showLoading) setCommentsLoading(true);
         setCommentsError(null);
         CommentsChatService.fetchComments(media_type, media_id)
-            .then(data => setComments(Array.isArray(data) ? data : []))
+            .then(data => {
+                const newComments = Array.isArray(data) ? data : [];
+                setComments(prev => areCommentsEqual(prev, newComments) ? prev : newComments);
+            })
             .catch(() => setCommentsError("No se pudieron cargar los comentarios"))
-            .finally(() => setCommentsLoading(false));
+            .finally(() => {
+                if (showLoading) setCommentsLoading(false);
+            });
     }, [media_type, media_id]);
+    //#endregion
+
+    //#region Eventos
+    // Carga inicial y cuando cambian media_type o media_id
+    useEffect(() => {
+        loadComments(true); // Solo aquí mostramos loading
+    }, [loadComments]);
+    // Polling para actualizar comentarios cada 300 milisegundos (sin loading)
+    useEffect(() => {
+        const interval = setInterval(() => loadComments(false), 300);
+        return () => clearInterval(interval);
+    }, [loadComments]);
     //#endregion
 
     //#region Gestión de comentarios
@@ -43,34 +69,30 @@ const CommentsChat = ({ media_type, media_id, user }) => {
                 comment: newComment.trim(),
                 createdAt: new Date().toISOString()
             };
-            const saved = await CommentsChatService.postComment(dto);
-            setComments(prev => [...prev, saved]);
+            await CommentsChatService.postComment(dto);
             setNewComment("");
+            loadComments();
         } catch {
             alert("No se pudo enviar el comentario.");
         }
         setPosting(false);
     };
     // Inicia la edición de un comentario
-    const handleEditComment = (comment) => {
+    const handleEditComment = useCallback((comment) => {
         setEditingId(comment._id);
         setEditingText(comment.text);
-    };
+    }, []);
     // Actualiza el texto mientras se edita un comentario
-    const handleEditChange = (e) => {
-        setEditingText(e.target.value);
-    };
+    const handleEditChange = (e) => setEditingText(e.target.value);
     // Guarda los cambios de un comentario editado
     const handleEditSubmit = async (comment) => {
         if (!editingText.trim()) return;
         try {
             const dto = { text: editingText.trim() };
-            const updated = await CommentsChatService.putComment(comment._id, dto);
-            setComments(prev =>
-                prev.map(c => c._id === comment._id ? { ...c, text: updated.text } : c)
-            );
+            await CommentsChatService.putComment(comment._id, dto);
             setEditingId(null);
             setEditingText("");
+            loadComments();
         } catch {
             alert("No se pudo editar el comentario.");
         }
@@ -80,7 +102,7 @@ const CommentsChat = ({ media_type, media_id, user }) => {
         if (!window.confirm("¿Seguro que quieres eliminar este comentario?")) return;
         try {
             await CommentsChatService.deleteComment(comment._id);
-            setComments(prev => prev.filter(c => c._id !== comment._id));
+            loadComments();
         } catch {
             alert("No se pudo eliminar el comentario.");
         }
@@ -167,7 +189,6 @@ const CommentsChat = ({ media_type, media_id, user }) => {
                         );
                     })
                 )}
-                <div ref={commentsEndRef} />
             </div>
             {user ? (
                 <form className="comments-chat-form" onSubmit={handleSendComment}>
