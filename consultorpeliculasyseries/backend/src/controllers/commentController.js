@@ -1,5 +1,9 @@
+//#region Imports
 import Comment from '../models/Comment.js';
+import CommentDTO from '../dtos/CommentDTO.js';
+//#endregion
 
+//#region Gestión de comentarios
 // Crear un comentario
 const createComment = async (req, res) => {
     // Recoge media_type, media_id, comment, createdAt del body
@@ -29,7 +33,6 @@ const createComment = async (req, res) => {
         res.status(500).send('Server error');
     }
 };
-
 // Obtener comentarios de una película/serie concreta
 const getComments = async (req, res) => {
     try {
@@ -43,23 +46,13 @@ const getComments = async (req, res) => {
             .populate('userId', 'nameUser')
             .sort({ createdAt: 1 });
 
-        const restructured = comments.map(comment => ({
-            _id: comment._id,
-            userName: comment.userId?.nameUser || 'Usuario',
-            userId: comment.userId?._id,
-            text: comment.text,
-            createdAt: comment.createdAt,
-            media_type: comment.media_type,
-            media_id: comment.media_id
-        }));
-
+        const restructured = comments.map(comment => new CommentDTO(comment));
         res.json(restructured);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');
     }
 };
-
 // Actualizar un comentario
 const updateComment = async (req, res) => {
     const { text } = req.body;
@@ -82,7 +75,6 @@ const updateComment = async (req, res) => {
         res.status(500).send('Server error');
     }
 };
-
 // Eliminar un comentario
 const deleteComment = async (req, res) => {
     try {
@@ -102,5 +94,15 @@ const deleteComment = async (req, res) => {
         res.status(500).send('Server error');
     }
 };
+//#endregion
 
-export { createComment, getComments, updateComment, deleteComment };
+//#region Controlador
+const commentController = {
+    createComment,
+    getComments,
+    updateComment,
+    deleteComment
+};
+//#endregion
+
+export default commentController;

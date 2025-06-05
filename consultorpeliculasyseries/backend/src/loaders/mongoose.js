@@ -1,10 +1,14 @@
+//#region Imports
 import mongoose from 'mongoose';
+//#endregion
 
+//#region Mongoose Loader
+// Permite que las queries incluyan campos no definidos en el esquema (para compatibilidad o flexibilidad)
 mongoose.set('strictQuery', false);
 
 const connectDB = async () => {
     try {
-        mongoose.connect(process.env.MONGODB_URL, {
+        await mongoose.connect(process.env.MONGODB_URL, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
@@ -16,5 +20,6 @@ const connectDB = async () => {
         }
     }
 };
+//#endregion
 
 export default connectDB;

@@ -1,13 +1,24 @@
+//#region Imports
 import express from 'express';
-import { register, login, getUserGallery, addToGallery, deleteFromGallery } from '../controllers/usersAndAuthController.js';
+import usersAndAuthController from '../controllers/usersAndAuthController.js';
 import { authMiddleware } from '../middlewares/authMiddleware.js';
+//#endregion
 
+//#region Express Router
 const router = express.Router();
+//#endregion
 
-router.post('/register', register);
-router.post('/login', login);
-router.get('/gallery', authMiddleware, getUserGallery);
-router.post('/gallery', authMiddleware, addToGallery);
-router.delete('/gallery', authMiddleware, deleteFromGallery);
+//#region Rutas
+// Registrar un nuevo usuario
+router.post('/register', usersAndAuthController.register);
+// Login de usuario
+router.post('/login', usersAndAuthController.login);
+// Obtener galería del usuario autenticado
+router.get('/gallery', authMiddleware, usersAndAuthController.getUserGallery);
+// Añadir contenido a la galería del usuario autenticado
+router.post('/gallery', authMiddleware, usersAndAuthController.addToGallery);
+// Eliminar contenido de la galería del usuario autenticado
+router.delete('/gallery', authMiddleware, usersAndAuthController.deleteFromGallery);
+//#endregion
 
 export default router;

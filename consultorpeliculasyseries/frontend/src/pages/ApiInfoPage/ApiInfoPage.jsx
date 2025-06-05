@@ -74,22 +74,20 @@ const ApiInfoPage = () => (
                     </li>
                 </ul>
             </div>
-            <p>
+            <div>
                 <strong>Notas técnicas:</strong><br />
                 <ul>
                     <li>El filtrado por géneros se realiza en una sola petición agrupando todos los IDs de géneros seleccionados, optimizando así el rendimiento.</li>
                     <li>Las búsquedas y listados son paginados para mejorar la experiencia de usuario y reducir la carga en la red.</li>
                     <li>La autenticación y la gestión de la galería requieren que el usuario esté registrado e identificado.</li>
                 </ul>
-            </p>
+            </div>
             <p>
                 Puedes consultar la documentación oficial de la API aquí:<br />
-                <a
-                    href="https://developer.themoviedb.org/reference/intro/getting-started"
+                <a href="https://developer.themoviedb.org/reference/intro/getting-started"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="apiinfo-link"
-                >
+                    className="apiinfo-link">
                     https://developer.themoviedb.org/reference/intro/getting-started
                 </a>
             </p>

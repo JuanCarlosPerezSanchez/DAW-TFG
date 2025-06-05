@@ -1,5 +1,8 @@
+//#region Imports
 import mongoose from 'mongoose';
+//#endregion
 
+//#region Schema
 const UserSchema = new mongoose.Schema({
     nameUser: {
         type: String,
@@ -15,5 +18,6 @@ const UserSchema = new mongoose.Schema({
         required: true,
     },
 }, { collection: 'Users' });
+//#endregion
 
 export default UserSchema;

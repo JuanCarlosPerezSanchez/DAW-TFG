@@ -1,114 +1,15 @@
-openapi: 3.0.0
+openapi: 3.0.3
 info:
+  title: Consultor de Películas y Series API
   version: 0.0.0
-  title: API Consulto De Peliculas/Series
-  description: Api para mi proyecto TFG de DAW usando OpenAPI
-
+  description: API para gestión de usuarios, galería, comentarios y consulta de datos de TMDB.
 servers:
-  - url: http://localhost:5000
+  - url: /api
 
 paths:
-  /comentarios:
-    get:
-      summary: Obtener todos los comentarios
-      responses:
-        '200':
-          description: Lista de todos los comentarios
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    userName:
-                      type: string
-                    text:
-                      type: string
-
+  /user/register:
     post:
-      summary: Crear un nuevo comentario
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                text:
-                  type: string
-
-      responses:
-        '201':
-          description: Comentario creado
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  userId:
-                    type: string
-                  text:
-                    type: string
-
-  /comentarios/{id}:
-    put:
-      summary: Actualizar un comentario
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                text:
-                  type: string
-
-      responses:
-        '200':
-          description: Comentario actualizado
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  userId:
-                    type: string
-                  text:
-                    type: string
-
-    delete:
-      summary: Eliminar un comentario
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-
-      responses:
-        '204':
-          description: Comentario eliminado
-
-  /auth/register:
-    post:
-      summary: Registrar un nuevo usuario
+      summary: Registro de usuario
       requestBody:
         required: true
         content:
@@ -122,21 +23,15 @@ paths:
                   type: string
                 password:
                   type: string
-
       responses:
-        '200':
-          description: Usuario registrado
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  token:
-                    type: string
+        '201':
+          description: Usuario registrado correctamente
+        '400':
+          description: Email ya registrado
 
-  /auth/login:
+  /user/login:
     post:
-      summary: Iniciar sesión
+      summary: Login de usuario
       requestBody:
         required: true
         content:
@@ -148,17 +43,238 @@ paths:
                   type: string
                 password:
                   type: string
-                  
       responses:
         '200':
-          description: Inicio de sesión exitoso
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  token:
-                    type: string
+          description: Login correcto
+        '400':
+          description: Usuario o contraseña incorrectos
+
+  /user/gallery:
+    get:
+      summary: Obtener galería del usuario autenticado
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Lista de contenidos de la galería
+    post:
+      summary: Añadir contenido a la galería
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: number
+                media_type:
+                  type: string
+                title:
+                  type: string
+                overview:
+                  type: string
+                poster_path:
+                  type: string
+      responses:
+        '201':
+          description: Añadido correctamente
+        '400':
+          description: Ya está en la galería
+    delete:
+      summary: Eliminar contenido de la galería
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: number
+                media_type:
+                  type: string
+      responses:
+        '200':
+          description: Eliminado correctamente
+        '404':
+          description: No encontrado
+
+  /comments:
+    get:
+      summary: Obtener comentarios de una película o serie
+      parameters:
+        - in: query
+          name: media_type
+          schema:
+            type: string
+        - in: query
+          name: media_id
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lista de comentarios
+    post:
+      summary: Crear comentario
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                media_type:
+                  type: string
+                media_id:
+                  type: string
+                comment:
+                  type: string
+                createdAt:
+                  type: string
+                  format: date-time
+      responses:
+        '201':
+          description: Comentario creado
+
+  /comments/{id}:
+    put:
+      summary: Actualizar comentario
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+      responses:
+        '200':
+          description: Comentario actualizado
+    delete:
+      summary: Eliminar comentario
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Comentario eliminado
+
+  /tmdb/search:
+    get:
+      summary: Buscar películas y series por texto
+      parameters:
+        - in: query
+          name: query
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: page
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Resultados de búsqueda
+
+  /tmdb/movie/popular:
+    get:
+      summary: Obtener películas populares
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Lista de películas populares
+
+  /tmdb/tv/popular:
+    get:
+      summary: Obtener series populares
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Lista de series populares
+
+  /tmdb/genre/movie/list:
+    get:
+      summary: Obtener géneros de películas
+      responses:
+        '200':
+          description: Lista de géneros de películas
+
+  /tmdb/genre/tv/list:
+    get:
+      summary: Obtener géneros de series
+      responses:
+        '200':
+          description: Lista de géneros de series
+
+  /tmdb/discover/{type}:
+    get:
+      summary: Descubrir películas o series por género
+      parameters:
+        - in: path
+          name: type
+          required: true
+          schema:
+            type: string
+            enum: [movie, tv]
+        - in: query
+          name: page
+          schema:
+            type: integer
+        - in: query
+          name: with_genres
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Resultados de descubrimiento
+
+  /tmdb/{type}/{id}:
+    get:
+      summary: Obtener detalles de una película o serie
+      parameters:
+        - in: path
+          name: type
+          required: true
+          schema:
+            type: string
+            enum: [movie, tv]
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Detalles del contenido
 
 components:
   securitySchemes:

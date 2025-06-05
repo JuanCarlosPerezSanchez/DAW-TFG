@@ -1,5 +1,8 @@
+//#region Imports
 import mongoose from 'mongoose';
+//#endregion
 
+//#region Schema
 const CommentSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -23,5 +26,6 @@ const CommentSchema = new mongoose.Schema({
         default: Date.now,
     },
 }, { collection: 'Comments' });
+//#endregion
 
 export default CommentSchema;

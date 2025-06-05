@@ -1,11 +1,23 @@
+//#region Imports
 import jwt from 'jsonwebtoken';
+//#endregion
 
-const generateToken = (user) => {
-    return jwt.sign({ user: { id: user.id } }, process.env.SECRET_KEY, { expiresIn: '24h' });
-};
-
-const verifyToken = (token) => {
+//#region Gestión de tokens JWT
+// Genera un token JWT para un usuario
+function generateToken(user) {
+    return jwt.sign({ user }, process.env.SECRET_KEY, { expiresIn: '24h' });
+}
+// Verifica y decodifica un token JWT
+function verifyToken(token) {
     return jwt.verify(token, process.env.SECRET_KEY);
-};
+}
+//#endregion
 
-export { generateToken, verifyToken };
+//#region Util
+const tokenManager = {
+    generateToken,
+    verifyToken
+};
+//#endregion
+
+export default tokenManager;

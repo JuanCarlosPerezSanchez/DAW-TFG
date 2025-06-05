@@ -1,14 +1,24 @@
+//#region Imports
 import bcrypt from 'bcryptjs';
+//#endregion
 
-const hashPassword = async (password) => {
+//#region Gestión de hash de contraseñas
+// Hashea una contraseña usando bcrypt
+async function hashPassword(password) {
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-    return hashedPassword;
-};
+    return await bcrypt.hash(password, salt);
+}
+// Compara una contraseña con su hash
+async function comparePassword(password, hashedPassword) {
+    return await bcrypt.compare(password, hashedPassword);
+}
+//#endregion
 
-const comparePassword = async (password, hashedPassword) => {
-    const isMatch = await bcrypt.compare(password, hashedPassword);
-    return isMatch;
+//#region Util
+const hashPasswordManager = {
+    hashPassword,
+    comparePassword
 };
+//#endregion
 
-export { hashPassword, comparePassword };
+export default hashPasswordManager;
