@@ -1,19 +1,22 @@
+//#region Imports
 import express from 'express';
-import { createComment, getComments, updateComment, deleteComment } from '../controllers/commentController.js';
+import commentController from '../controllers/commentController.js';
 import { authMiddleware } from '../middlewares/authMiddleware.js';
+//#endregion
 
+//#region Express Router
 const router = express.Router();
+//#endregion
 
-// POST /api/comments
-router.post('/', authMiddleware, createComment);
-
-// GET /api/comments?media_type=movie&media_id=123
-router.get('/', getComments);
-
-// PUT /api/comments/:id
-router.put('/:id', authMiddleware, updateComment);
-
-// DELETE /api/comments/:id
-router.delete('/:id', authMiddleware, deleteComment);
+//#region Rutas
+// Crear un comentario (requiere autenticación)
+router.post('/', authMiddleware, commentController.createComment);
+// Obtener comentarios de una película o serie (público)
+router.get('/', commentController.getComments);
+// Actualizar un comentario (requiere autenticación)
+router.put('/:id', authMiddleware, commentController.updateComment);
+// Eliminar un comentario (requiere autenticación)
+router.delete('/:id', authMiddleware, commentController.deleteComment);
+//#endregion
 
 export default router;

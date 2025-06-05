@@ -1,14 +1,10 @@
+//#region Imports
 import mongoose from 'mongoose';
+import GallerySchema from '../schemas/GallerySchema.js';
+//#endregion
 
-const GallerySchema = new mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    id: { type: Number, required: true }, // id de la película/serie TMDB
-    media_type: { type: String, required: true }, // "movie" o "tv"
-    title: String,
-    name: String,
-    overview: String,
-    poster_path: String,
-    // ...otros campos que quieras guardar
-});
+//#region Modelo
+const Gallery = mongoose.model('Gallery', GallerySchema);
+//#endregion
 
-export default mongoose.model('Gallery', GallerySchema);
+export default Gallery;

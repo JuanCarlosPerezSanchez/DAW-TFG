@@ -1,22 +1,27 @@
+//#region Imports
 import express from 'express';
-import * as tmdbController from '../controllers/tmdbController.js';
+import tmdbController from '../controllers/tmdbController.js';
+//#endregion
+
+//#region Express Router
 const router = express.Router();
+//#endregion
 
-// Rutas para búsqueda
+//#region Rutas
+// Buscar películas y series por texto
 router.get('/search', tmdbController.searchMulti);
-
-// Rutas para obtener películas y series populares
+// Obtener películas populares
 router.get('/movie/popular', tmdbController.getPopularMovies);
+// Obtener series populares
 router.get('/tv/popular', tmdbController.getPopularSeries);
-
-// Rutas para obtener géneros
+// Obtener géneros de películas
 router.get('/genre/movie/list', tmdbController.getMovieGenres);
+// Obtener géneros de series
 router.get('/genre/tv/list', tmdbController.getTvGenres);
-
-// Ruta para descubrir por género
+// Descubrir películas o series por género
 router.get('/discover/:type', tmdbController.discoverByGenre);
-
-// Rutas para detalles
+// Obtener detalles de una película o serie
 router.get('/:type/:id', tmdbController.getDetails);
+//#endregion
 
 export default router;

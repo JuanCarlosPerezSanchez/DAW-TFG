@@ -84,7 +84,6 @@ const HomePage = ({ selectedGenres }) => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [dto.loading, dto.page, dto.hasMore]);
-
   // Carga más contenido al cambiar de página
   useEffect(() => {
     if (dto.page === 1) return;
@@ -144,8 +143,7 @@ const HomePage = ({ selectedGenres }) => {
             item ? (
               <div
                 className="home-card"
-                key={`${item.media_type || (item.first_air_date ? "tv" : "movie")}-${item.id}`}
-              >
+                key={`${item.media_type || (item.first_air_date ? "tv" : "movie")}-${item.id}`}>
                 <ContentCard
                   id={item.id}
                   image_url={
