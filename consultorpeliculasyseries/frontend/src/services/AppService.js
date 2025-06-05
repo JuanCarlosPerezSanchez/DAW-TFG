@@ -6,8 +6,8 @@ const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 // Obtiene y combina los géneros de películas y series, eliminando duplicados
 async function fetchAllGenres() {
     const [movieRes, tvRes] = await Promise.all([
-        fetch(`${BASE_URL}/tmdb/genre/movie/list`),
-        fetch(`${BASE_URL}/tmdb/genre/tv/list`)
+        fetch(`${BASE_URL}/api/tmdb/genre/movie/list`),
+        fetch(`${BASE_URL}/api/tmdb/genre/tv/list`)
     ]);
     const movieData = await movieRes.json();
     const tvData = await tvRes.json();

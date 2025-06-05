@@ -9,7 +9,7 @@ const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 //#region Gestión de galería de usuario
 // Añade un contenido a la galería del usuario
 async function addToGallery({ id, media_type, title, overview, image_url }) {
-    const res = await fetch(`${BASE_URL}/user/gallery`, {
+    const res = await fetch(`${BASE_URL}/api/user/gallery`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -30,7 +30,7 @@ async function addToGallery({ id, media_type, title, overview, image_url }) {
 }
 // Elimina un contenido de la galería del usuario
 async function removeFromGallery(id, media_type) {
-    const res = await fetch(`${BASE_URL}/user/gallery`, {
+    const res = await fetch(`${BASE_URL}/api/user/gallery`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
@@ -45,7 +45,7 @@ async function removeFromGallery(id, media_type) {
 }
 // Comprueba si un contenido(pelicula/serie) está en la galería del usuario
 async function checkIfInGallery(id, media_type) {
-    const res = await fetch(`${BASE_URL}/user/gallery`, {
+    const res = await fetch(`${BASE_URL}/api/user/gallery`, {
         headers: { ...UtilsService.getAuthHeaders() }
     });
     if (!res.ok) return false;

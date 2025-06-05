@@ -106,7 +106,7 @@ const MoviesPage = ({ selectedGenres }) => {
             if (prev.loading) return prev;
             const updated = new MoviesPageDTO();
             Object.assign(updated, prev);
-            updated.setPage(prev.page + 2); // +2 porque cargamos 2 páginas (40 items)
+            updated.setPage(prev.page + 2);
             return updated;
           });
         }
@@ -115,10 +115,10 @@ const MoviesPage = ({ selectedGenres }) => {
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [dto.loading, dto.page, dto.hasMore]);
+  }, [dto.loading, dto.hasMore]);
   // Cargar más al cambiar de página
   useEffect(() => {
-    if (dto.page <= 2) return; // Solo cargar más si la página es mayor que 2
+    if (dto.page <= 2) return;
     let cancelled = false;
     (async () => {
       const updatedDto = new MoviesPageDTO();
@@ -128,7 +128,6 @@ const MoviesPage = ({ selectedGenres }) => {
         let movies = [];
         let hasMore = true;
         if (selectedGenres.includes("0")) {
-          // Cargar 40 más (2 páginas)
           const [dataA, dataB] = await Promise.all([
             MoviesPageService.fetchPopularMovies(dto.page - 1),
             MoviesPageService.fetchPopularMovies(dto.page)
@@ -137,7 +136,6 @@ const MoviesPage = ({ selectedGenres }) => {
           hasMore = dataB.page < dataB.total_pages;
         } else {
           const genresArray = getGenresArray();
-          // Cargar 40 más (2 páginas) con todos los géneros seleccionados (una sola petición por página)
           const combinedResults = await MoviesPageService.fetchMoviesByGenresMultiplePages(genresArray, [dto.page - 1, dto.page]);
           movies = combinedResults.filter(m => (m.media_type === "movie" || !m.media_type));
           hasMore = movies.length > 0;

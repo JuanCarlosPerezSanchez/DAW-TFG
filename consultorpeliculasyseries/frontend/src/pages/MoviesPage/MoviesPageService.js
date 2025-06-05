@@ -8,7 +8,7 @@ const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 //#region Gestion de la API
 async function fetchPopularMovies(page = 1) {
-    const res = await fetch(`${BASE_URL}/tmdb/movie/popular?page=${page}`, {
+    const res = await fetch(`${BASE_URL}/api/tmdb/movie/popular?page=${page}`, {
         headers: {
             ...UtilsService.getAuthHeaders()
         }
@@ -20,7 +20,7 @@ async function fetchPopularMovies(page = 1) {
 async function fetchMoviesByGenres(genresArray, page = 1) {
     if (!genresArray.length) return [];
     const withGenres = genresArray.join(",");
-    const res = await fetch(`${BASE_URL}/tmdb/discover/movie?page=${page}&with_genres=${withGenres}`, {
+    const res = await fetch(`${BASE_URL}/api/tmdb/discover/movie?page=${page}&with_genres=${withGenres}`, {
         headers: { ...UtilsService.getAuthHeaders() }
     });
     const data = await res.json();
@@ -31,7 +31,7 @@ async function fetchMoviesByGenresMultiplePages(genresArray, pages = [1, 2]) {
     if (!genresArray.length) return [];
     const withGenres = genresArray.join(",");
     const promises = pages.map(page =>
-        fetch(`${BASE_URL}/tmdb/discover/movie?page=${page}&with_genres=${withGenres}`, {
+        fetch(`${BASE_URL}/api/tmdb/discover/movie?page=${page}&with_genres=${withGenres}`, {
             headers: { ...UtilsService.getAuthHeaders() }
         }).then(res => res.json())
     );
@@ -40,7 +40,7 @@ async function fetchMoviesByGenresMultiplePages(genresArray, pages = [1, 2]) {
 }
 // Obtiene la galería del usuario autenticado
 async function fetchUserGallery() {
-    const res = await fetch(`${BASE_URL}/user/gallery`, {
+    const res = await fetch(`${BASE_URL}/api/user/gallery`, {
         headers: { ...UtilsService.getAuthHeaders() }
     });
     if (!res.ok) return [];

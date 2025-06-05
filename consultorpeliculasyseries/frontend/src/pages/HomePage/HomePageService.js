@@ -9,7 +9,7 @@ const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 //#region Obtención de datos media
 // Obtiene películas populares (paginadas)
 async function fetchPopularMovies(page = 1) {
-    const res = await fetch(`${BASE_URL}/tmdb/movie/popular?page=${page}`, {
+    const res = await fetch(`${BASE_URL}/api/tmdb/movie/popular?page=${page}`, {
         headers: { ...UtilsService.getAuthHeaders() }
     });
     if (!res.ok) throw new Error("Error cargando películas populares");
@@ -17,7 +17,7 @@ async function fetchPopularMovies(page = 1) {
 }
 // Obtiene series populares (paginadas)
 async function fetchPopularSeries(page = 1) {
-    const res = await fetch(`${BASE_URL}/tmdb/tv/popular?page=${page}`, {
+    const res = await fetch(`${BASE_URL}/api/tmdb/tv/popular?page=${page}`, {
         headers: { ...UtilsService.getAuthHeaders() }
     });
     if (!res.ok) throw new Error("Error cargando series populares");
@@ -27,7 +27,7 @@ async function fetchPopularSeries(page = 1) {
 async function fetchByGenres(type, genresArray, page = 1) {
     if (!genresArray.length) return [];
     const withGenres = genresArray.join(",");
-    const res = await fetch(`${BASE_URL}/tmdb/discover/${type}?page=${page}&with_genres=${withGenres}`, {
+    const res = await fetch(`${BASE_URL}/api/tmdb/discover/${type}?page=${page}&with_genres=${withGenres}`, {
         headers: { ...UtilsService.getAuthHeaders() }
     });
     const data = await res.json();

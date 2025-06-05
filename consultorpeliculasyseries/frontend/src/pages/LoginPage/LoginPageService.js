@@ -6,8 +6,8 @@ const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 // Realiza la petición de login al backend.
 async function login(email, password) {
     const url = BASE_URL.endsWith("/")
-        ? `${BASE_URL}user/login`
-        : `${BASE_URL}/user/login`;
+        ? `${BASE_URL}api/user/login`
+        : `${BASE_URL}/api/user/login`;
 
     const res = await fetch(url, {
         method: "POST",

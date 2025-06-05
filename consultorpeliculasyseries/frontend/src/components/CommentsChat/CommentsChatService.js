@@ -10,14 +10,14 @@ const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 // Funcion para obtener los comentarios de la bbdd
 async function fetchComments(media_type, media_id) {
     const res = await fetch(
-        `${BASE_URL}/comments?media_type=${media_type}&media_id=${media_id}`
+        `${BASE_URL}/api/comments?media_type=${media_type}&media_id=${media_id}`
     );
     return await res.json();
 }
 // Funcion para crear un comentario al backend
 async function postComment(commentDTO) {
     const token = localStorage.getItem("token");
-    const res = await fetch(`${BASE_URL}/comments`, {
+    const res = await fetch(`${BASE_URL}/api/comments`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -31,7 +31,7 @@ async function postComment(commentDTO) {
 // Funcion para modificar un comentario
 async function putComment(commentId, commentDTO) {
     const token = localStorage.getItem("token");
-    const res = await fetch(`${BASE_URL}/comments/${commentId}`, {
+    const res = await fetch(`${BASE_URL}/api/comments/${commentId}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -45,7 +45,7 @@ async function putComment(commentId, commentDTO) {
 // Funcion para eliminar un comentario
 async function deleteComment(commentId) {
     const token = localStorage.getItem("token");
-    const res = await fetch(`${BASE_URL}/comments/${commentId}`, {
+    const res = await fetch(`${BASE_URL}/api/comments/${commentId}`, {
         method: "DELETE",
         headers: {
             ...(token ? { Authorization: `Bearer ${token}` } : {})

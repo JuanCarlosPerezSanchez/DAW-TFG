@@ -4,31 +4,36 @@ import GalleryButtonService from "./GalleryButtonService";
 import "./GalleryButton.css";
 //#endregion
 
-const GalleryButton = ({ id, media_type, image_url, title, overview, showRemoveButton = false, onRemoveFromGallery }) => {
+const GalleryButton = ({ id, media_type, image_url, title, overview, showRemoveButton = false, onRemoveFromGallery, added, onAddToGallery }) => {
     //#region Constantes
     const [adding, setAdding] = useState(false);
-    const [added, setAdded] = useState(false);
+    const [addedLocal, setAddedLocal] = useState(false);
     const user = localStorage.getItem("user");
     //#endregion
 
     //#region Eventos
-    // Evento que detecta si al montar el componente o cambiar id/media_type/user/adding, consulta si el contenido está en la galería
+    // Solo consulta a la API si no se pasa la prop 'added'
     useEffect(() => {
+        if (typeof added === "boolean") {
+            setAddedLocal(added);
+            return;
+        }
         let ignore = false;
         async function fetchStatus() {
             if (!user) {
-                setAdded(false);
+                setAddedLocal(false);
                 return;
             }
             try {
                 const isAdded = await GalleryButtonService.checkIfInGallery(id, media_type);
-                if (!ignore) setAdded(isAdded);
+                if (!ignore) setAddedLocal(isAdded);
             } catch {
-                if (!ignore) setAdded(false);
+                if (!ignore) setAddedLocal(false);
             }
         }
         fetchStatus();
-    }, [id, media_type, user, adding]);
+        return () => { ignore = true; };
+    }, [id, media_type, user, adding, added]);
 
     // Si no hay usuario logueado, no se muestra el botón
     if (!user) return null;
@@ -40,13 +45,14 @@ const GalleryButton = ({ id, media_type, image_url, title, overview, showRemoveB
         e.stopPropagation();
         setAdding(true);
         try {
-            if (added || showRemoveButton) {
+            if (addedLocal || showRemoveButton) {
                 if (onRemoveFromGallery) onRemoveFromGallery();
                 await GalleryButtonService.removeFromGallery(id, media_type);
-                setAdded(false);
+                setAddedLocal(false);
             } else {
                 await GalleryButtonService.addToGallery({ id, media_type, title, overview, image_url });
-                setAdded(true);
+                setAddedLocal(true);
+                if (onAddToGallery) onAddToGallery();
             }
         } catch (err) {
             alert(err.message);
@@ -59,16 +65,15 @@ const GalleryButton = ({ id, media_type, image_url, title, overview, showRemoveB
     //#region Renderizado
     return (
         <button onClick={handleAddOrRemove}
-                className={`content-card-add-btn${(added || showRemoveButton) ? " added" : ""}`}
+                className={`content-card-add-btn${(addedLocal || showRemoveButton) ? " added" : ""}`}
                 disabled={adding}
                 style={{
-                    // Si está añadido o es botón de eliminar, cambia el color a rojo
-                    ...(showRemoveButton || added ? { background: "#ff3333", color: "#fff" } : {}),
+                    ...(showRemoveButton || addedLocal ? { background: "#ff3333", color: "#fff" } : {}),
                     userSelect: "none"
                 }}>
             {adding
-                ? (added || showRemoveButton ? "Eliminando..." : "Añadiendo...")
-                : (added || showRemoveButton ? "- Mi Galería" : "+ Mi Galería")}
+                ? (addedLocal || showRemoveButton ? "Eliminando..." : "Añadiendo...")
+                : (addedLocal || showRemoveButton ? "- Mi Galería" : "+ Mi Galería")}
         </button>
     );
     //#endregion

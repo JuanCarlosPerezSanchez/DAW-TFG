@@ -5,7 +5,7 @@ const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 //#region Gestión de detalles
 // Llama a la API para obtener los detalles de una película o serie
 async function fetchDetails(media_type, id) {
-    const res = await fetch(`${BASE_URL}/tmdb/${media_type}/${id}`);
+    const res = await fetch(`${BASE_URL}/api/tmdb/${media_type}/${id}`);
     if (!res.ok) throw new Error("No se pudo cargar la información.");
     return await res.json();
 }

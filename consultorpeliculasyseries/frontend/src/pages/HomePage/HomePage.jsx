@@ -4,6 +4,7 @@ import ContentCard from "../../components/ContentCard/ContentCard";
 import HomePageDTO from "./HomePageDTO";
 import HomePageService from "./HomePageService";
 import UtilsService from "../../services/UtilsService";
+import GalleryButtonService from "../../components/GalleryButton/GalleryButtonService";
 import "./HomePage.css";
 //#endregion
 
@@ -11,12 +12,35 @@ const HomePage = ({ selectedGenres }) => {
   //#region Constantes
   const [dto, setDto] = useState(() => new HomePageDTO());
   const containerRef = useRef();
+  const [galleryIds, setGalleryIds] = useState([]);
   //#endregion
 
   //#region Funciones auxiliares
   const getGenresArray = () => {
     if (selectedGenres.includes("0")) return [];
     return selectedGenres;
+  };
+  // Carga la galería del usuario
+  const fetchGalleryIds = async () => {
+    const user = localStorage.getItem("user");
+    if (!user) {
+      setGalleryIds([]);
+      return;
+    }
+    try {
+      const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+      const res = await fetch(`${BASE_URL}/api/user/gallery`, {
+        headers: { ...GalleryButtonService.getAuthHeaders() }
+      });
+      if (!res.ok) {
+        setGalleryIds([]);
+        return;
+      }
+      const data = await res.json();
+      setGalleryIds(Array.isArray(data) ? data.map(item => `${item.media_type}-${item.id}`) : []);
+    } catch {
+      setGalleryIds([]);
+    }
   };
   //#endregion
 
@@ -74,6 +98,7 @@ const HomePage = ({ selectedGenres }) => {
         dto.hasMore
       ) {
         setDto(prev => {
+          if (prev.loading) return prev;
           const updated = new HomePageDTO();
           Object.assign(updated, prev);
           updated.setPage(prev.page + 1);
@@ -83,7 +108,7 @@ const HomePage = ({ selectedGenres }) => {
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [dto.loading, dto.page, dto.hasMore]);
+  }, [dto.loading, dto.hasMore]);
   // Carga más contenido al cambiar de página
   useEffect(() => {
     if (dto.page === 1) return;
@@ -127,6 +152,13 @@ const HomePage = ({ selectedGenres }) => {
     return () => { cancelled = true; };
     // eslint-disable-next-line
   }, [dto.page, selectedGenres]);
+  // Carga la galería al montar y cuando cambia el usuario
+  useEffect(() => {
+    fetchGalleryIds();
+    const sync = () => fetchGalleryIds();
+    window.addEventListener("storage", sync);
+    return () => window.removeEventListener("storage", sync);
+  }, []);
   //#endregion
 
   //#region Renderizado
@@ -158,6 +190,15 @@ const HomePage = ({ selectedGenres }) => {
                       ? "tv"
                       : "movie"
                   }
+                  addedToGallery={galleryIds.includes(`${item.media_type || (item.first_air_date ? "tv" : "movie")}-${item.id}`)}
+                  onAddToGallery={() => {
+                    const key = `${item.media_type || (item.first_air_date ? "tv" : "movie")}-${item.id}`;
+                    setGalleryIds(prev => prev.includes(key) ? prev : [...prev, key]);
+                  }}
+                  onRemoveFromGallery={() => {
+                    const key = `${item.media_type || (item.first_air_date ? "tv" : "movie")}-${item.id}`;
+                    setGalleryIds(prev => prev.filter(k => k !== key));
+                  }}
                 />
               </div>
             ) : (
