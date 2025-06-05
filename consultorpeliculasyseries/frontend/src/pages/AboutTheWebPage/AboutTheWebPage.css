@@ -1,0 +1,21 @@
+/* --- Fondo principal de la página de información --- */
+.aboutweb-bg {
+    background: #181a20;
+    color: #fff;
+    min-height: 100vh;
+    padding: 40px;
+    padding-top: 60px;
+    padding-bottom: 110px;
+}
+
+/* --- Título principal centrado --- */
+.aboutweb-title {
+    text-align: center;
+}
+
+/* --- Contenedor interno centrado y alineado a la izquierda --- */
+.aboutweb-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    text-align: left;
+}

@@ -10,10 +10,10 @@ describe('usersAndAuthController - E2E Tests', () => {
     beforeAll(async () => {
         server = app.listen(0);
 
-        if (!process.env.BBDD_URL) {
-            throw new Error('BBDD_URL is not defined');
+        if (!process.env.MONGODB_URL) {
+            throw new Error('MONGODB_URL is not defined');
         }
-        await mongoose.connect(process.env.BBDD_URL);
+        await mongoose.connect(process.env.MONGODB_URL);
     });
 
     afterAll(async () => {

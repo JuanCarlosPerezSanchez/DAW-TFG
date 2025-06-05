@@ -1,0 +1,26 @@
+.home-main {
+    padding: 30px 0 90px 0;
+    background: #181a20;
+    min-height: 100vh;
+    padding-top: 90px;
+}
+.home-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+    gap: 20px;
+}
+.home-card {
+    min-width: 210px;
+    max-width: 210px;
+    flex-shrink: 0;
+}
+.home-error {
+    color: red;
+    margin: 20px;
+    text-align: center;
+}
+.home-loading {
+    text-align: center;
+    margin: 20px;
+}

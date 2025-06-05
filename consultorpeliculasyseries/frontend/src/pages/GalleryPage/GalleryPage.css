@@ -1,0 +1,67 @@
+/* --- Contenedor principal de la galería --- */
+.galeria-root {
+    background: #181a20;
+    padding-top: 60px;
+}
+
+/* --- Contenedor interno de la galería --- */
+.galeria-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 0 0 0;
+}
+
+/* --- Mensaje cuando la galería está vacía o el usuario no está logueado --- */
+.galeria-empty {
+    color: #aaa;
+    text-align: center;
+    margin-top: 60px;
+    font-size: 20px;
+    background: #232733;
+    border-radius: 12px;
+    padding: 40px;
+}
+
+/* --- Emoji grande para galería vacía --- */
+.galeria-empty-emoji {
+    font-size: 40px;
+    display: block;
+    margin-top: 18px;
+}
+
+/* --- Fila de tarjetas de contenido --- */
+.galeria-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+    gap: 20px;
+}
+
+/* --- Tarjeta individual de contenido --- */
+.galeria-card {
+    min-width: 210px;
+    max-width: 210px;
+    flex-shrink: 0;
+}
+
+/* --- Mensaje de error en la galería --- */
+.galeria-error {
+    color: #ff3333;
+    text-align: center;
+    margin: 32px 0 0 0;
+    font-size: 1.1rem;
+    background: #232733;
+    border-radius: 12px;
+    padding: 24px;
+}
+
+/* --- Mensaje de carga --- */
+.galeria-loading {
+    color: #fff;
+    text-align: center;
+    margin: 32px 0 0 0;
+    font-size: 1.1rem;
+    background: #232733;
+    border-radius: 12px;
+    padding: 24px;
+}

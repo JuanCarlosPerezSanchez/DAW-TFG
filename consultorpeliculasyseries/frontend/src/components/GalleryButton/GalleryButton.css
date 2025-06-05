@@ -1,0 +1,22 @@
+/* --- Botón de añadir: botón flotante para agregar contenido, oculto por defecto --- */
+.content-card-add-btn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #181a20;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 14px;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s cubic-bezier(.4,0,.2,1), background 0.2s;
+}
+
+/* Botón visible cuando el overlay está activo */
+.content-card-overlay.show .content-card-add-btn {
+    opacity: 1;
+    pointer-events: auto;
+}

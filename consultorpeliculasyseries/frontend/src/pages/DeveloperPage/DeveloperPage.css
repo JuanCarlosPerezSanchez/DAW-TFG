@@ -1,0 +1,41 @@
+/* --- Fondo principal de la página del desarrollador --- */
+.developer-bg {
+    background: #181a20;
+    color: #fff;
+    min-height: 100vh;
+    padding: 40px;
+    padding-top: 60px;
+    padding-bottom: 110px;
+}
+
+/* --- Título principal centrado --- */
+.developer-title {
+    text-align: center;
+}
+
+/* --- Contenedor interno --- */
+.developer-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+/* --- Botones de descarga de CV --- */
+.developer-cv-links {
+    margin-bottom: 24px;
+    text-align: center;
+}
+.developer-cv-btn {
+    display: inline-block;
+    margin: 0 12px;
+    padding: 10px 22px;
+    background: #2d8cff;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+.developer-cv-btn:hover {
+    background: #1866c1;
+}

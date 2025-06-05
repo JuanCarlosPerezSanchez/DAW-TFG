@@ -6,11 +6,19 @@ const CommentSchema = new mongoose.Schema({
         ref: 'User',
         required: true,
     },
+    media_type: {
+        type: String,
+        required: true,
+    },
+    media_id: {
+        type: String,
+        required: true,
+    },
     text: {
         type: String,
         required: true,
     },
-    date: {
+    createdAt: {
         type: Date,
         default: Date.now,
     },

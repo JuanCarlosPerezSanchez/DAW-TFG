@@ -1,0 +1,26 @@
+/* --- Fondo principal de la página de API --- */
+.apiinfo-bg {
+    background: #181a20;
+    color: #fff;
+    min-height: 100vh;
+    padding: 40px;
+    padding-top: 60px;
+    padding-bottom: 110px;
+}
+
+/* --- Título principal centrado --- */
+.apiinfo-title {
+    text-align: center;
+}
+
+/* --- Contenedor interno --- */
+.apiinfo-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+/* --- Enlace destacado --- */
+.apiinfo-link {
+    color: #FFD600;
+}

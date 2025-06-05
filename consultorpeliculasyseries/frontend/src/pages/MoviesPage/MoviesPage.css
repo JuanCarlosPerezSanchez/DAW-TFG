@@ -1,0 +1,34 @@
+/* --- Layout principal de la página de películas --- */
+.movies-main {
+    background: #181a20;
+    min-height: 100vh;
+    padding: 90px 0 90px 0;
+}
+
+/* --- Fila de tarjetas de películas --- */
+.movies-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+    gap: 20px;
+}
+
+/* --- Tarjeta individual de película --- */
+.movies-card {
+    min-width: 210px;
+    max-width: 210px;
+    flex-shrink: 0;
+}
+
+/* --- Mensaje de error --- */
+.movies-error {
+    color: red;
+    margin: 20px;
+    text-align: center;
+}
+
+/* --- Mensaje de carga --- */
+.movies-loading {
+    text-align: center;
+    margin: 20px;
+}

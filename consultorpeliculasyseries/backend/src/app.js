@@ -1,9 +1,9 @@
-import express from 'express';
 import dotenv from 'dotenv';
+dotenv.config();
+
+import express from 'express';
 import connectDB from './loaders/mongoose.js';
 import expressLoader from './loaders/express.js';
-
-dotenv.config();
 
 const app = express();
 

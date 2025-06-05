@@ -1,15 +1,19 @@
 import express from 'express';
 import { createComment, getComments, updateComment, deleteComment } from '../controllers/commentController.js';
-import auth from '../middlewares/auth.js';
+import { authMiddleware } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
-router.post('/createComment', auth, createComment);
+// POST /api/comments
+router.post('/', authMiddleware, createComment);
 
-router.get('/getComments', auth, getComments);
+// GET /api/comments?media_type=movie&media_id=123
+router.get('/', getComments);
 
-router.put('/updateComment/:id', auth, updateComment);
+// PUT /api/comments/:id
+router.put('/:id', authMiddleware, updateComment);
 
-router.delete('/deleteComment/:id', auth, deleteComment);
+// DELETE /api/comments/:id
+router.delete('/:id', authMiddleware, deleteComment);
 
 export default router;

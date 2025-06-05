@@ -1,0 +1,361 @@
+/* --- Layout principal y tarjeta de detalles --- */
+.details-main {
+    background: #181a20;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 50px;
+}
+
+.details-card {
+    display: flex;
+    background: #232733;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px #000a;
+    width: 1300px;
+    margin: 50px 0;
+    overflow: hidden;
+}
+
+/* --- Columna izquierda: imagen y detalles técnicos --- */
+.details-left {
+    flex: 30%;
+    background: #1e222b;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    box-shadow: -2px 0 12px #0004;
+}
+
+.details-img {
+    width: 320px;
+    height: 480px;
+    object-fit: cover;
+    border-radius: 20px;
+    user-select: none;
+}
+
+.details-left-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 10px;
+}
+
+.details-left-info-row {
+    align-items: center;
+    width: 100%;
+    background: none;
+    margin: 0;
+    gap: 0;
+}
+
+.details-left-info-label {
+    color: #FFD600;
+    font-weight: 700;
+    font-size: 1.08rem;
+    min-width: 120px;
+    text-align: left;
+    margin-top: 12px;
+    display: block;
+}
+
+.details-left-info-value {
+    color: #fff;
+    font-size: 1.08rem;
+    text-align: left;
+    word-break: break-word;
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* --- Columna derecha: info principal --- */
+.details-right {
+    flex: 70%;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    background: #232733;
+    min-width: 0;
+}
+
+/* --- Título y subtítulos --- */
+.details-title {
+    color: #FFD600;
+    font-size: 2.1rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+    font-style: italic;
+    letter-spacing: 1px;
+}
+
+.details-release-date {
+    color: #aaa;
+    font-size: 1.08rem;
+    font-weight: 700;
+    margin-left: 5px;
+    font-style: italic;
+    letter-spacing: 1px;
+}
+
+.details-original-title {
+    color: #aaa;
+    font-size: 1.08rem;
+    font-style: italic;
+    margin-bottom: 16px;
+}
+
+/* --- Badge tipo botón pequeño, compacto --- */
+.details-type-badge {
+    display: inline-block;
+    padding: 2px 12px;
+    margin: 0 0 18px 0;
+    border-radius: 20px;
+    background: #1e222b;
+    color: #FFD600;
+    font-weight: 600;
+    font-size: 15px;
+    user-select: none;
+    width: fit-content;
+    line-height: 18px;
+    box-shadow: 0 2px 4px rgba(255, 213, 0, 0.5);
+}
+
+/* --- Sección de sinopsis y bloques generales --- */
+.details-section {
+    margin-bottom: 18px;
+    color: #fff;
+    font-size: 1.13rem;
+    line-height: 1.6;
+    text-align: left;
+}
+
+.details-section strong {
+    color: #FFD600;
+    font-weight: 600;
+    font-size: 1.04rem;
+}
+
+/* --- Plataformas --- */
+.details-platforms-title {
+    color: #FFD600;
+    font-size: 22px;
+    text-align: left;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-style: italic;
+    letter-spacing: 1px;
+    padding-left: 2px;
+}
+
+.details-platforms-list {
+    display: flex;
+    flex-direction: row;
+    gap: 18px;
+    align-items: center;
+    user-select: none;
+}
+
+.details-platform-logo {
+    width: 55px;
+    height: 55px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px #0004;
+    display: block;
+}
+
+.details-platform-logo:hover {
+    box-shadow: 0 4px 32px #0007;
+    transform: scale(1.1);
+}
+
+/* --- Reparto principal --- */
+.details-cast-section {
+    margin-top: 24px;
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+.details-cast-section strong {
+    color: #FFD600;
+    font-size: 1.13rem;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.details-cast-list {
+    display: flex;
+    flex-direction: row;
+    gap: 18px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.details-cast-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80px;
+    transition: transform 0.15s;
+}
+
+.details-cast-item:hover {
+    transform: scale(1.1);
+}
+
+.details-cast-img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #232733;
+    box-shadow: 0 2px 8px #0007;
+    margin-bottom: 6px;
+    user-select: none;
+}
+
+.details-cast-name {
+    color: #FFD600;
+    font-size: 0.98rem;
+    text-align: center;
+    font-weight: 600;
+    word-break: break-word;
+    max-width: 80px;
+}
+
+/* --- Tráilers --- */
+.details-trailers-row {
+    display: flex;
+    flex-direction: row;
+    margin: 30px 0 0 0;
+    justify-content: center;
+    min-height: 320px;
+}
+
+.details-trailer-section {
+    min-width: 320px;
+    max-width: 480px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 50px;
+}
+
+.details-trailer-section strong {
+    color: #FFD600;
+    font-size: 1.08rem;
+    margin-bottom: 8px;
+    align-self: flex-start;
+}
+
+.trailer-thumb-container {
+    cursor: pointer;
+    user-select: none;
+}
+
+.trailer-thumb {
+    pointer-events: none;
+    border: none;
+    filter: brightness(0.7);
+    border-radius: 10px;
+    width: 100%;
+    max-width: 480px;
+    min-height: 260px;
+    background: #000;
+    margin-top: 20px;
+    box-shadow: 0 2px 16px #000a;
+}
+
+.trailer-thumb-container:hover .trailer-thumb {
+    border: 2px solid white;
+    transform: scale(1.03);
+}
+
+/* --- Modal de tráiler grande --- */
+.trailer-modal-overlay {
+    position: fixed;
+    z-index: 9999;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.2s;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+.trailer-modal-content {
+    position: relative;
+    background: #181a20;
+    border-radius: 18px;
+    box-shadow: 0 8px 48px #000b;
+    padding: 32px 32px 24px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 90vw;
+    max-height: 90vh;
+}
+.trailer-modal-close {
+    position: absolute;
+    top: 18px;
+    right: 24px;
+    font-size: 2.2rem;
+    color: #FFD600;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 2;
+    font-weight: bold;
+    transition: color 0.2s;
+}
+.trailer-modal-close:hover {
+    color: #fff;
+}
+.trailer-modal-title {
+    color: #FFD600;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 18px;
+    text-align: center;
+}
+.trailer-modal-iframe {
+    width: 70vw;
+    height: 39vw;
+    max-width: 900px;
+    max-height: 510px;
+    min-width: 320px;
+    min-height: 180px;
+    border-radius: 12px;
+    background: #000;
+    border: none;
+    box-shadow: 0 2px 24px #000a;
+    user-select: none;
+}
+
+/* --- Mensajes de error y carga --- */
+.details-error {
+    color: red;
+    padding: 40px;
+    background: #181a20;
+    min-height: 100vh;
+    text-align: center;
+    font-size: 1.3rem;
+}
+
+.details-loading {
+    background: #181a20;
+    min-height: 100vh;
+    color: #fff;
+    padding: 40px;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+/* --- Espaciador superior --- */
+.details-top-spacer {
+    height: 100px;
+}
