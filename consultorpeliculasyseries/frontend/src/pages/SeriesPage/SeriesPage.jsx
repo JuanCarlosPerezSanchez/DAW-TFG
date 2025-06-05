@@ -4,6 +4,7 @@ import ContentCard from "../../components/ContentCard/ContentCard";
 import SeriesPageDTO from "./SeriesPageDTO";
 import SeriesPageService from "./SeriesPageService";
 import UtilsService from "../../services/UtilsService";
+import GalleryButtonService from "../../components/GalleryButton/GalleryButtonService";
 import "./SeriesPage.css";
 //#endregion
 
@@ -12,6 +13,7 @@ const SeriesPage = ({ selectedGenres }) => {
     const FILA_SIZE = 7;
     const [dto, setDto] = useState(() => new SeriesPageDTO());
     const containerRef = useRef();
+    const [galleryIds, setGalleryIds] = useState([]);
     //#endregion
 
     //#region Efectos
@@ -67,7 +69,7 @@ const SeriesPage = ({ selectedGenres }) => {
         };
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
-    }, [dto.loading, dto.page, dto.hasMore]);
+    }, [dto.loading, dto.hasMore]);
     // Cargar más series al cambiar de página
     useEffect(() => {
         if (dto.page <= 2) return;
@@ -91,6 +93,34 @@ const SeriesPage = ({ selectedGenres }) => {
         return () => { cancelled = true; };
         // eslint-disable-next-line
     }, [dto.page, selectedGenres]);
+    // Carga la galería al montar y cuando cambia el usuario
+    useEffect(() => {
+        const fetchGalleryIds = async () => {
+            const user = localStorage.getItem("user");
+            if (!user) {
+                setGalleryIds([]);
+                return;
+            }
+            try {
+                const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+                const res = await fetch(`${BASE_URL}/api/user/gallery`, {
+                    headers: { ...GalleryButtonService.getAuthHeaders() }
+                });
+                if (!res.ok) {
+                    setGalleryIds([]);
+                    return;
+                }
+                const data = await res.json();
+                setGalleryIds(Array.isArray(data) ? data.map(item => `${item.media_type}-${item.id}`) : []);
+            } catch {
+                setGalleryIds([]);
+            }
+        };
+        fetchGalleryIds();
+        const sync = () => fetchGalleryIds();
+        window.addEventListener("storage", sync);
+        return () => window.removeEventListener("storage", sync);
+    }, []);
     //#endregion
 
     //#region Renderizado
@@ -117,7 +147,7 @@ const SeriesPage = ({ selectedGenres }) => {
                                     title={serie.name}
                                     overview={serie.overview}
                                     media_type={serie.media_type || "tv"}
-                                    addedToGallery={serie.addedToGallery}
+                                    addedToGallery={galleryIds.includes(`${serie.media_type || "tv"}-${serie.id}`)}
                                     trailer={
                                         serie.videos?.results?.find(
                                             v => v.site === "YouTube" && v.type === "Trailer"

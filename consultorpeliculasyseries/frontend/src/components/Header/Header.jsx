@@ -38,6 +38,7 @@ const Header = ({ genres, selectedGenres, setSelectedGenres, onFilterChange }) =
     // Estado de búsqueda
     const [search, setSearch] = useState("");
     const [searchResults, setSearchResults] = useState([]);
+    const searchTimeout = useRef();
     //#endregion
 
     //#region Eventos
@@ -61,18 +62,21 @@ const Header = ({ genres, selectedGenres, setSelectedGenres, onFilterChange }) =
     //#region Funciones
     //#region Manejo de las búsquedas
     // Maneja el cambio en el input de búsqueda y busca automáticamente
-    const handleSearchChange = async (e) => {
+    const handleSearchChange = (e) => {
         const value = e.target.value;
         setSearch(value);
+        if (searchTimeout.current) clearTimeout(searchTimeout.current);
         if (value.trim() === "") {
             setSearchResults([]);
             setShowDropdown(false);
             return;
         }
-        const data = await HeaderService.fetchSearchResults(value);
-        const filtered = HeaderService.filterSearchResults(data);
-        setSearchResults(filtered);
-        setShowDropdown(filtered.length > 0);
+        searchTimeout.current = setTimeout(async () => {
+            const data = await HeaderService.fetchSearchResults(value);
+            const filtered = HeaderService.filterSearchResults(data);
+            setSearchResults(filtered);
+            setShowDropdown(filtered.length > 0);
+        }, 300);
     };
     // Al pulsar Enter, redirige a la página de resultados
     const handleSearch = (e) => {

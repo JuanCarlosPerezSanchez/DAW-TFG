@@ -9,7 +9,7 @@ const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 //#region Obtención de galería de usuario
 // Obtiene la galería del usuario autenticado
 async function fetchGallery() {
-    const res = await fetch(`${BASE_URL}/user/gallery`, {
+    const res = await fetch(`${BASE_URL}/api/user/gallery`, {
         headers: { ...UtilsService.getAuthHeaders() }
     });
     if (!res.ok) {

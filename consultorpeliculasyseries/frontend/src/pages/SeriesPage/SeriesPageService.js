@@ -9,7 +9,7 @@ const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 //#region Gestion de obtencion de medias segin los géneros
 // Obtiene series populares (paginadas)
 async function fetchPopularSeries(page = 1) {
-    const res = await fetch(`${BASE_URL}/tmdb/tv/popular?page=${page}`, {
+    const res = await fetch(`${BASE_URL}/api/tmdb/tv/popular?page=${page}`, {
         headers: { ...UtilsService.getAuthHeaders() }
     });
     if (!res.ok) throw new Error("Error cargando series populares");
@@ -20,7 +20,7 @@ async function fetchByGenres(genresArray, pages) {
     if (!genresArray.length) return [];
     const withGenres = genresArray.join(",");
     const promises = pages.map(page =>
-        fetch(`${BASE_URL}/tmdb/discover/tv?page=${page}&with_genres=${withGenres}`, {
+        fetch(`${BASE_URL}/api/tmdb/discover/tv?page=${page}&with_genres=${withGenres}`, {
             headers: { ...UtilsService.getAuthHeaders() }
         }).then(res => res.json())
     );

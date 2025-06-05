@@ -9,7 +9,7 @@ const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 //#region Funciones auxiliares
 // Busca resultados según el query
 async function fetchSearchResults(query) {
-    const res = await fetch(`${BASE_URL}/tmdb/search?query=${encodeURIComponent(query)}&page=1`, {
+    const res = await fetch(`${BASE_URL}/api/tmdb/search?query=${encodeURIComponent(query)}&page=1`, {
         headers: {
             ...UtilsService.getAuthHeaders()
         }

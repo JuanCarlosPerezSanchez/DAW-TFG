@@ -6,7 +6,7 @@ const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 // Llama a la API para registrar un nuevo usuario.
 async function registerUser({ email, nameUser, password }) {
     try {
-        const res = await fetch(`${BASE_URL}/user/register`, {
+        const res = await fetch(`${BASE_URL}/api/user/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, nameUser, password })

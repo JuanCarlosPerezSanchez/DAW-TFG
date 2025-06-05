@@ -5,7 +5,7 @@ import GalleriButton from "../GalleryButton/GalleryButton";
 import "./ContentCard.css";
 //#endregion
 
-const ContentCard = ({ image_url, id, media_type, title, overview, onRemoveFromGallery, showRemoveButton, addedToGallery }) => {
+const ContentCard = ({ image_url, id, media_type, title, overview, onRemoveFromGallery, showRemoveButton, addedToGallery, onAddToGallery }) => {
     //#region Constantes
     const navigate = useNavigate();
     const imageSrc = image_url ? image_url : "/images/placeholder_image.png";
@@ -23,6 +23,7 @@ const ContentCard = ({ image_url, id, media_type, title, overview, onRemoveFromG
                 src={imageSrc}
                 alt="Portada"
                 className="content-card-img"
+                loading="lazy"
             />
             <div className={`content-card-overlay${hovered && user ? " show" : ""}`}>
                 {user && hovered && (
@@ -35,6 +36,7 @@ const ContentCard = ({ image_url, id, media_type, title, overview, onRemoveFromG
                         showRemoveButton={showRemoveButton}
                         onRemoveFromGallery={onRemoveFromGallery}
                         added={addedToGallery}
+                        onAddToGallery={onAddToGallery}
                     />
                 )}
             </div>

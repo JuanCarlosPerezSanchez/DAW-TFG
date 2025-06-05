@@ -11,7 +11,7 @@ const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 // Llama a la API para buscar resultados segun coincidencia
 async function fetchSearchResults(query) {
     const res = await fetch(
-        `${BASE_URL}/tmdb/search?query=${encodeURIComponent(query)}&page=1`
+        `${BASE_URL}/api/tmdb/search?query=${encodeURIComponent(query)}&page=1`
     );
     if (!res.ok) throw new Error("Error en la búsqueda");
     return await res.json();
