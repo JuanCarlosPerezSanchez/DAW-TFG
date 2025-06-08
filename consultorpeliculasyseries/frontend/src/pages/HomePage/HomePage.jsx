@@ -16,10 +16,6 @@ const HomePage = ({ selectedGenres }) => {
   //#endregion
 
   //#region Funciones auxiliares
-  const getGenresArray = () => {
-    if (selectedGenres.includes("0")) return [];
-    return selectedGenres;
-  };
   // Carga la galería del usuario
   const fetchGalleryIds = async () => {
     const user = localStorage.getItem("user");
@@ -66,7 +62,7 @@ const HomePage = ({ selectedGenres }) => {
           ]);
           hasMore = (movieData.page < movieData.total_pages) || (tvData.page < tvData.total_pages);
         } else {
-          const genresArray = getGenresArray();
+          const genresArray = selectedGenres.includes("0") ? [] : selectedGenres;
           const [movieResults, tvResults] = await Promise.all([
             HomePageService.fetchByGenres("movie", genresArray, 1),
             HomePageService.fetchByGenres("tv", genresArray, 1)
@@ -131,7 +127,7 @@ const HomePage = ({ selectedGenres }) => {
           ]);
           hasMore = (movieData.page < movieData.total_pages) || (tvData.page < tvData.total_pages);
         } else {
-          const genresArray = getGenresArray();
+          const genresArray = selectedGenres.includes("0") ? [] : selectedGenres;
           const [movieResults, tvResults] = await Promise.all([
             HomePageService.fetchByGenres("movie", genresArray, dto.page),
             HomePageService.fetchByGenres("tv", genresArray, dto.page)

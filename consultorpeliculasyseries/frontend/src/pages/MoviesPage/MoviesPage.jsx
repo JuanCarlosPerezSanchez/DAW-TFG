@@ -11,35 +11,42 @@ const MoviesPage = ({ selectedGenres }) => {
   //#region Constantes
   const FILA_SIZE = 7;
   const [dto, setDto] = useState(() => new MoviesPageDTO());
-  const [gallerySet, setGallerySet] = useState(new Set());
+  const [galleryIds, setGalleryIds] = useState([]);
   const containerRef = useRef();
   //#endregion
 
   //#region Funciones auxiliares
-  // Devuelve el array de géneros seleccionados (vacío si "0" está seleccionado)
-  const getGenresArray = () => {
-    if (selectedGenres.includes("0")) return [];
-    return selectedGenres;
+  // Carga la galería del usuario
+  const fetchGalleryIds = async () => {
+    const user = localStorage.getItem("user");
+    if (!user) {
+      setGalleryIds([]);
+      return;
+    }
+    try {
+      const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+      const res = await fetch(`${BASE_URL}/api/user/gallery`, {
+        headers: { ...UtilsService.getAuthHeaders() }
+      });
+      if (!res.ok) {
+        setGalleryIds([]);
+        return;
+      }
+      const data = await res.json();
+      setGalleryIds(Array.isArray(data) ? data.map(item => `${item.media_type}-${item.id}`) : []);
+    } catch {
+      setGalleryIds([]);
+    }
   };
   //#endregion
 
   //#region Eventos
   // Carga la galería del usuario una sola vez por página
   useEffect(() => {
-    async function fetchGallery() {
-      const user = localStorage.getItem("user");
-      if (!user) {
-        setGallerySet(new Set());
-        return;
-      }
-      try {
-        const data = await MoviesPageService.fetchUserGallery();
-        setGallerySet(new Set(data.map(item => `${item.media_type}-${item.id}`)));
-      } catch {
-        setGallerySet(new Set());
-      }
-    }
-    fetchGallery();
+    fetchGalleryIds();
+    const sync = () => fetchGalleryIds();
+    window.addEventListener("storage", sync);
+    return () => window.removeEventListener("storage", sync);
   }, []);
   // Carga inicial y cuando cambian los filtros
   useEffect(() => {
@@ -60,17 +67,12 @@ const MoviesPage = ({ selectedGenres }) => {
           movies = [...(data1.results || []), ...(data2.results || [])];
           hasMore = data2.page < data2.total_pages;
         } else {
-          const genresArray = getGenresArray();
+          const genresArray = selectedGenres.includes("0") ? [] : selectedGenres;
           // Cargar página 1 y 2 con todos los géneros seleccionados (una sola petición por página)
           const combinedResults = await MoviesPageService.fetchMoviesByGenresMultiplePages(genresArray, [1, 2]);
           movies = combinedResults.filter(m => (m.media_type === "movie" || !m.media_type));
           hasMore = movies.length > 0;
         }
-        // Marca si cada película está en la galería
-        movies = movies.map(m => ({
-          ...m,
-          addedToGallery: gallerySet.has(`${m.media_type || "movie"}-${m.id}`)
-        }));
         newDto.setMovies(movies);
         newDto.setPage(2); // Ya hemos cargado hasta la página 2
         newDto.setHasMore(hasMore);
@@ -83,7 +85,7 @@ const MoviesPage = ({ selectedGenres }) => {
       }
     })();
     // eslint-disable-next-line
-  }, [selectedGenres, gallerySet]);
+  }, [selectedGenres]);
   // Scroll infinito
   useEffect(() => {
     let ticking = false;
@@ -135,7 +137,7 @@ const MoviesPage = ({ selectedGenres }) => {
           movies = [...(dataA.results || []), ...(dataB.results || [])];
           hasMore = dataB.page < dataB.total_pages;
         } else {
-          const genresArray = getGenresArray();
+          const genresArray = selectedGenres.includes("0") ? [] : selectedGenres;
           const combinedResults = await MoviesPageService.fetchMoviesByGenresMultiplePages(genresArray, [dto.page - 1, dto.page]);
           movies = combinedResults.filter(m => (m.media_type === "movie" || !m.media_type));
           hasMore = movies.length > 0;
@@ -170,21 +172,30 @@ const MoviesPage = ({ selectedGenres }) => {
               <div
                 className="movies-card"
                 key={`movie-${movie.id}-${movie.title?.replace(/\s/g, "") || ""}-${idx2}`}>
-                <ContentCard id={movie.id}
-                            image_url={
-                              movie.poster_path ? "https://image.tmdb.org/t/p/w500" + movie.poster_path : null
-                            }
-                            title={movie.title}
-                            overview={movie.overview}
-                            media_type={movie.media_type || "movie"}
-                            addedToGallery={movie.addedToGallery}
-                            trailer={
-                              movie.videos?.results?.find(
-                                v => v.site === "YouTube" && v.type === "Trailer"
-                              )
-                            }
-                            credits={movie.credits}
-                            platforms={movie["watch/providers"]}
+                <ContentCard
+                  id={movie.id}
+                  image_url={
+                    movie.poster_path ? "https://image.tmdb.org/t/p/w500" + movie.poster_path : null
+                  }
+                  title={movie.title}
+                  overview={movie.overview}
+                  media_type={movie.media_type || "movie"}
+                  addedToGallery={galleryIds.includes(`${movie.media_type || "movie"}-${movie.id}`)}
+                  onAddToGallery={() => {
+                    const key = `${movie.media_type || "movie"}-${movie.id}`;
+                    setGalleryIds(prev => prev.includes(key) ? prev : [...prev, key]);
+                  }}
+                  onRemoveFromGallery={() => {
+                    const key = `${movie.media_type || "movie"}-${movie.id}`;
+                    setGalleryIds(prev => prev.filter(k => k !== key));
+                  }}
+                  trailer={
+                    movie.videos?.results?.find(
+                      v => v.site === "YouTube" && v.type === "Trailer"
+                    )
+                  }
+                  credits={movie.credits}
+                  platforms={movie["watch/providers"]}
                 />
               </div>
             ) : (

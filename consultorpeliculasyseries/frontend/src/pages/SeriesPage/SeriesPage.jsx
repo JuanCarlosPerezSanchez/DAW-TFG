@@ -16,6 +16,31 @@ const SeriesPage = ({ selectedGenres }) => {
     const [galleryIds, setGalleryIds] = useState([]);
     //#endregion
 
+    //#region Funciones auxiliares
+    // Carga la galería del usuario
+    const fetchGalleryIds = async () => {
+        const user = localStorage.getItem("user");
+        if (!user) {
+            setGalleryIds([]);
+            return;
+        }
+        try {
+            const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+            const res = await fetch(`${BASE_URL}/api/user/gallery`, {
+                headers: { ...GalleryButtonService.getAuthHeaders() }
+            });
+            if (!res.ok) {
+                setGalleryIds([]);
+                return;
+            }
+            const data = await res.json();
+            setGalleryIds(Array.isArray(data) ? data.map(item => `${item.media_type}-${item.id}`) : []);
+        } catch {
+            setGalleryIds([]);
+        }
+    };
+    //#endregion
+
     //#region Efectos
     // Carga inicial y cuando cambian los filtros
     useEffect(() => {
@@ -95,27 +120,6 @@ const SeriesPage = ({ selectedGenres }) => {
     }, [dto.page, selectedGenres]);
     // Carga la galería al montar y cuando cambia el usuario
     useEffect(() => {
-        const fetchGalleryIds = async () => {
-            const user = localStorage.getItem("user");
-            if (!user) {
-                setGalleryIds([]);
-                return;
-            }
-            try {
-                const BASE_URL = process.env.REACT_APP_API_BASE_URL;
-                const res = await fetch(`${BASE_URL}/api/user/gallery`, {
-                    headers: { ...GalleryButtonService.getAuthHeaders() }
-                });
-                if (!res.ok) {
-                    setGalleryIds([]);
-                    return;
-                }
-                const data = await res.json();
-                setGalleryIds(Array.isArray(data) ? data.map(item => `${item.media_type}-${item.id}`) : []);
-            } catch {
-                setGalleryIds([]);
-            }
-        };
         fetchGalleryIds();
         const sync = () => fetchGalleryIds();
         window.addEventListener("storage", sync);
@@ -148,6 +152,14 @@ const SeriesPage = ({ selectedGenres }) => {
                                     overview={serie.overview}
                                     media_type={serie.media_type || "tv"}
                                     addedToGallery={galleryIds.includes(`${serie.media_type || "tv"}-${serie.id}`)}
+                                    onAddToGallery={() => {
+                                        const key = `${serie.media_type || "tv"}-${serie.id}`;
+                                        setGalleryIds(prev => prev.includes(key) ? prev : [...prev, key]);
+                                    }}
+                                    onRemoveFromGallery={() => {
+                                        const key = `${serie.media_type || "tv"}-${serie.id}`;
+                                        setGalleryIds(prev => prev.filter(k => k !== key));
+                                    }}
                                     trailer={
                                         serie.videos?.results?.find(
                                             v => v.site === "YouTube" && v.type === "Trailer"

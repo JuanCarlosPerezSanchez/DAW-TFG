@@ -17,9 +17,8 @@ const DesarrolladorPage = () => (
                 <strong>Nombre:</strong> Juan Carlos Pérez Sánchez<br />
                 <strong>Contacto:</strong>
                 <ul>
-                    <li>Teléfono: 611 607 940</li>
                     <li>Email: jcpersa47@gmail.com</li>
-                    <li>Dirección: Av. Altamira 29, bloque 1, 8ºD, Sevilla</li>
+                    <li>Teléfono: 611 607 940</li>
                 </ul>
             </div>
             <p>
