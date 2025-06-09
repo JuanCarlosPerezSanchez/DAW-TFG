@@ -1,0 +1,355 @@
+{
+	"info": {
+		"_postman_id": "34f4a365-ed0c-4470-ac6c-fc18f291a143",
+		"name": "Consultor Películas y Series API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "40985364"
+	},
+	"item": [
+		{
+			"name": "Auth & Users",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nameUser\": \"TestUser\",\n  \"email\": \"test@email.com\",\n  \"password\": \"1234\"\n}"
+						},
+						"url": "{{BASE_URL_BACKEND}}/api/user/register"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"test@email.com\",\n  \"password\": \"1234\"\n}"
+						},
+						"url": "{{BASE_URL_BACKEND}}/api/user/login"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Gallery",
+			"item": [
+				{
+					"name": "Get User Gallery",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": "{{BASE_URL_BACKEND}}/api/user/gallery"
+					},
+					"response": []
+				},
+				{
+					"name": "Add to Gallery",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 603,\n  \"media_type\": \"movie\",\n  \"title\": \"The Matrix\",\n  \"overview\": \"A computer hacker learns...\",\n  \"poster_path\": \"/poster.jpg\"\n}"
+						},
+						"url": "{{BASE_URL_BACKEND}}/api/user/gallery"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete from Gallery",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": 603,\n  \"media_type\": \"movie\"\n}"
+						},
+						"url": "{{BASE_URL_BACKEND}}/api/user/gallery"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "Get Comments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL_BACKEND}}/api/comments?media_type=movie&media_id=603",
+							"host": [
+								"{{BASE_URL_BACKEND}}"
+							],
+							"path": [
+								"api",
+								"comments"
+							],
+							"query": [
+								{
+									"key": "media_type",
+									"value": "movie"
+								},
+								{
+									"key": "media_id",
+									"value": "603"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Comment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"media_type\": \"movie\",\n  \"media_id\": \"603\",\n  \"comment\": \"¡Gran película!\"\n}"
+						},
+						"url": "{{BASE_URL_BACKEND}}/api/comments"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Comment",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"text\": \"Comentario editado\"\n}"
+						},
+						"url": "{{BASE_URL_BACKEND}}/api/comments/{{comment_id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Comment",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": "{{BASE_URL_BACKEND}}/api/comments/{{comment_id}}"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TMDB",
+			"item": [
+				{
+					"name": "Search Multi",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL_BACKEND}}/api/tmdb/search?query=matrix",
+							"host": [
+								"{{BASE_URL_BACKEND}}"
+							],
+							"path": [
+								"api",
+								"tmdb",
+								"search"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "matrix"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Popular Movies",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{BASE_URL_BACKEND}}/api/tmdb/movie/popular"
+					},
+					"response": []
+				},
+				{
+					"name": "Popular Series",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{BASE_URL_BACKEND}}/api/tmdb/tv/popular"
+					},
+					"response": []
+				},
+				{
+					"name": "Movie Genres",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{BASE_URL_BACKEND}}/api/tmdb/genre/movie/list"
+					},
+					"response": []
+				},
+				{
+					"name": "TV Genres",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{BASE_URL_BACKEND}}/api/tmdb/genre/tv/list"
+					},
+					"response": []
+				},
+				{
+					"name": "Discover Movies by Genre",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL_BACKEND}}/api/tmdb/discover/movie?with_genres=28",
+							"host": [
+								"{{BASE_URL_BACKEND}}"
+							],
+							"path": [
+								"api",
+								"tmdb",
+								"discover",
+								"movie"
+							],
+							"query": [
+								{
+									"key": "with_genres",
+									"value": "28"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Discover Series by Genre",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL_BACKEND}}/api/tmdb/discover/tv?with_genres=18",
+							"host": [
+								"{{BASE_URL_BACKEND}}"
+							],
+							"path": [
+								"api",
+								"tmdb",
+								"discover",
+								"tv"
+							],
+							"query": [
+								{
+									"key": "with_genres",
+									"value": "18"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Movie Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{BASE_URL_BACKEND}}/api/tmdb/movie/603"
+					},
+					"response": []
+				},
+				{
+					"name": "TV Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{BASE_URL_BACKEND}}/api/tmdb/tv/1399"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5000"
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "comment_id",
+			"value": ""
+		}
+	]
+}
