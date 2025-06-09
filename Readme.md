@@ -35,6 +35,14 @@ Aplicación web para consultar, buscar y gestionar información sobre películas
 - MongoDB en local o en la nube (Atlas)
 - Clave de API de TMDB ([solicitar aquí](https://www.themoviedb.org/settings/api))
 
+### Descargas de la API del Backend
+
+Colleccion de Postman para Tests de la API:
+[Descargar colección Postman de la API](Recursos/Postman/Consultor%20Películas%20y%20Series%20API.postman_collection.json)
+
+Archivo YAML de la API
+[Descargar archivo .yaml de la API](consultorpeliculasyseries/backend/src/openapi/openapi.yaml)
+
 ## Instalación
 
 ### 1. Clona el repositorio
