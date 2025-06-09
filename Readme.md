@@ -270,6 +270,10 @@ DAW-TFG/
 │       ├── package.json
 │       └── README.md
 ├── Recursos/
-│   └── images/
+│   ├── images/
+│   │   ├── Arquitectura.png
+│   │   └── Diagrama de flujo.png
+│   └── Postman/
+│       └── Consultor Películas y Series API.postman_collection.json
 └── Readme.md
 ```
