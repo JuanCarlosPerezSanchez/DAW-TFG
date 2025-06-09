@@ -90,8 +90,8 @@ const getUserGallery = async (req, res) => {
 const deleteFromGallery = async (req, res) => {
     try {
         const userId = req.user.id;
-        const { id, media_type } = req.body;
-        const result = await Gallery.findOneAndDelete({ userId, id, media_type });
+        const { id, media_type } = req.query;
+        const result = await Gallery.findOneAndDelete({ userId, id: Number(id), media_type });
         if (!result) {
             return res.status(404).json({ msg: 'No se encontró el elemento en tu galería' });
         }

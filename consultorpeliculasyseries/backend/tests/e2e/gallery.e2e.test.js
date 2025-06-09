@@ -111,10 +111,11 @@ describe('Gallery Endpoints', () => {
                 overview: 'Test Overview',
                 poster_path: '/test.jpg'
             });
+        // Envía los datos como query params, no como body
         const res = await request(app)
             .delete('/api/user/gallery')
             .set('Authorization', `Bearer ${token}`)
-            .send({ id: 123, media_type: 'movie' });
+            .query({ id: 123, media_type: 'movie' });
         expect(res.statusCode).toBe(200);
     });
 });

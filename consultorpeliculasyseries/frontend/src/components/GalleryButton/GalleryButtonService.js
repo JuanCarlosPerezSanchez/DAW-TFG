@@ -30,18 +30,12 @@ async function addToGallery({ id, media_type, title, overview, image_url }) {
 }
 // Elimina un contenido de la galería del usuario
 async function removeFromGallery(id, media_type) {
-    const res = await fetch(`${BASE_URL}/api/user/gallery`, {
+    const res = await fetch(`${BASE_URL}/api/user/gallery?id=${id}&media_type=${media_type}`, {
         method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-            ...UtilsService.getAuthHeaders()
-        },
-        body: JSON.stringify({ id, media_type })
+        headers: { ...UtilsService.getAuthHeaders() }
     });
-    if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.msg || data.message || "No se pudo eliminar de tu galería");
-    }
+    if (!res.ok) throw new Error("No se pudo eliminar de la galería");
+    return await res.json();
 }
 // Comprueba si un contenido(pelicula/serie) está en la galería del usuario
 async function checkIfInGallery(id, media_type) {
