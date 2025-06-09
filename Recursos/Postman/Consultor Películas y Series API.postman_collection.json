@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "34f4a365-ed0c-4470-ac6c-fc18f291a143",
+		"_postman_id": "0dc53a5f-87cc-47ca-8fac-8ca678126d6e",
 		"name": "Consultor Películas y Series API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "40985364"
@@ -100,11 +100,27 @@
 								"value": "Bearer {{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"id\": 603,\n  \"media_type\": \"movie\"\n}"
-						},
-						"url": "{{BASE_URL_BACKEND}}/api/user/gallery"
+						"url": {
+							"raw": "{{BASE_URL_BACKEND}}/api/user/gallery?id=603&media_type=movie",
+							"host": [
+								"{{BASE_URL_BACKEND}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"gallery"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "603"
+								},
+								{
+									"key": "media_type",
+									"value": "movie"
+								}
+							]
+						}
 					},
 					"response": []
 				}
@@ -338,18 +354,26 @@
 			]
 		}
 	],
-	"variable": [
+	"event": [
 		{
-			"key": "base_url",
-			"value": "http://localhost:5000"
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		},
 		{
-			"key": "token",
-			"value": ""
-		},
-		{
-			"key": "comment_id",
-			"value": ""
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }

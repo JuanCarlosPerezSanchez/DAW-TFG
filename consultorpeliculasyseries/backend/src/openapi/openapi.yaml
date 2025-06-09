@@ -87,17 +87,15 @@ paths:
       summary: Eliminar contenido de la galería
       security:
         - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                id:
-                  type: number
-                media_type:
-                  type: string
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: number
+        - in: query
+          name: media_type
+          schema:
+            type: string
       responses:
         '200':
           description: Eliminado correctamente
