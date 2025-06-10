@@ -8,7 +8,7 @@ import "./ContentCard.css";
 const ContentCard = ({ image_url, id, media_type, title, overview, onRemoveFromGallery, showRemoveButton, addedToGallery, onAddToGallery }) => {
     //#region Constantes
     const navigate = useNavigate();
-    const imageSrc = image_url ? image_url : "/images/placeholder_image.png";
+    const imageSrc = image_url ? image_url : "/images/placeholder_Image.png";
     const [hovered, setHovered] = useState(false);
     const user = localStorage.getItem("user");
     //#endregion
