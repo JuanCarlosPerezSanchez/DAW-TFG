@@ -175,7 +175,7 @@ const DetailsPage = () => {
                                         <img className="details-cast-img"
                                             src={actor.profile_path
                                                 ? `https://image.tmdb.org/t/p/w92${actor.profile_path}`
-                                                : "/images/placeholder_image.png"}
+                                                : "/images/placeholder_Image.png"}
                                             alt={actor.name}
                                         />
                                         <div className="details-cast-name">{actor.name}</div>

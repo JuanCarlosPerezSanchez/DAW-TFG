@@ -12,7 +12,7 @@ const router = express.Router();
 //#region Rutas
 // Rutas de autenticación y gestión de usuario
 router.use('/user', authRoutes);
-// Rutas de comentarios (crear, obtener, actualizar, eliminar)
+// Rutas de comentarios (crear, obtener, actualizar, eliminar) => CRUD
 router.use('/comments', commentRoutes);
 // Rutas de consulta a TMDB (películas, series, géneros, etc.)
 router.use('/tmdb', tmdbRoutes);

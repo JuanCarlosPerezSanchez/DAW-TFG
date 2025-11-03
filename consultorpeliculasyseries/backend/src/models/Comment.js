@@ -4,7 +4,7 @@ import CommentSchema from '../schemas/CommentSchema.js';
 //#endregion
 
 //#region Modelo
-const Comment = mongoose.model('Comment', CommentSchema);
+const Comment = mongoose.model('Comment', CommentSchema); // Permite realizar operaciones CRUD (crear, leer, actualizar, borrar)
 //#endregion
 
 export default Comment;

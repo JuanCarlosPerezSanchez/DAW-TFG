@@ -56,8 +56,7 @@ const DesarrolladorPage = () => (
                 <strong>Idiomas:</strong>
                 <ul>
                     <li>Español: Nativo</li>
-                    <li>Catalán: Nativo</li>
-                    <li>Inglés: Nivel intermedio</li>
+                    <li>Inglés: Nivel bajo/medio</li>
                 </ul>
             </div>
             <div>
